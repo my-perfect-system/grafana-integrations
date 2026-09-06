@@ -3,20 +3,11 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "xtkCtBkiz",
-    "namespace": "default",
-    "uid": "a4b285cb-868a-4886-801f-e7203e19767f",
-    "resourceVersion": "1788699163054016",
-    "generation": 2,
-    "creationTimestamp": "2026-09-06T10:53:03Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "2378423278219264"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:cfxfadu9b7k00a",
-      "grafana.app/folder": "",
-      "grafana.app/saved-from-ui": "Grafana v13.0.2 (3fcdbc5a)",
-      "grafana.app/updatedBy": "user:cfxfadu9b7k00a",
-      "grafana.app/updatedTimestamp": "2026-09-06T12:52:43Z"
+      "grafana.app/folder": ""
     }
   },
   "spec": {
