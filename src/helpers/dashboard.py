@@ -141,15 +141,23 @@ def dashboard_title(doc: dict) -> str:
 
 
 def load_dashboards(source_dir: Path) -> list[tuple[str, str, dict]]:
-    """Return ``(subfolder, filename, doc)`` for every JSON under ``source_dir``."""
+    """Return ``(subfolder, filename, doc)`` for every JSON under ``source_dir``.
+
+    ``subfolder`` is the file's parent path relative to ``source_dir`` (POSIX,
+    ``""`` for files directly under the root), so nested folder trees are
+    preserved instead of flattened to the immediate folder name.
+    """
+    source = Path(source_dir)
     results: list[tuple[str, str, dict]] = []
-    for path in sorted(Path(source_dir).rglob("*.json")):
+    for path in sorted(source.rglob("*.json")):
         try:
             doc = json.loads(path.read_text())
         except (json.JSONDecodeError, OSError) as exc:
             print(f"warning: skipping {path}: {exc}", file=sys.stderr)
             continue
-        results.append((path.parent.name, path.name, doc))
+        rel = path.parent.relative_to(source)
+        subfolder = "" if rel == Path(".") else rel.as_posix()
+        results.append((subfolder, path.name, doc))
     return results
 
 

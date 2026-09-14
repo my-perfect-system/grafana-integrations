@@ -4,21 +4,78 @@ from __future__ import annotations
 
 import json
 import sys
+import uuid
 from pathlib import Path
 
-from core import auth, settings
-from helpers import dashboard
+from core import auth, settings, state
+from helpers import dashboard, rules, transform
 
 
-def ensure_grafana_folder(client: auth.GrafanaClient, name: str):
-    if not name:
-        return {"uid": "", "title": ""}
-    folders = client.request_json("GET", "/api/folders") or []
-    for folder in folders:
-        if folder.get("title") == name:
-            return folder
-    created = client.request_json("POST", "/api/folders", json={"title": name})
-    return created or {"uid": "", "title": name}
+def _list_child_folders(client: auth.GrafanaClient, parent_uid: str):
+    path = "/api/folders"
+    if parent_uid:
+        path += f"?parentUid={parent_uid}"
+    return client.request_json("GET", path) or []
+
+
+def _all_folders(client: auth.GrafanaClient) -> dict[str, str]:
+    """Return ``{folder_path: uid}`` for the whole remote folder tree."""
+    folders: dict[str, str] = {}
+
+    def walk(parent_uid: str = "", prefix: str = "") -> None:
+        for folder in _list_child_folders(client, parent_uid):
+            title = folder.get("title", "")
+            path = f"{prefix}/{title}" if prefix else title
+            folders[path] = folder.get("uid", "")
+            walk(folder.get("uid", ""), path)
+
+    walk()
+    return folders
+
+
+def _local_folder_paths(source: Path) -> set[str]:
+    """All non-hidden subdirectory paths under ``source`` (relative, POSIX)."""
+    paths: set[str] = set()
+    if not source.exists():
+        return paths
+    for p in source.rglob("*"):
+        if not p.is_dir():
+            continue
+        rel = p.relative_to(source)
+        if any(part.startswith(".") for part in rel.parts):
+            continue
+        paths.add(rel.as_posix())
+    return paths
+
+
+def ensure_folders(
+    client: auth.GrafanaClient, paths: set[str], dry_run: bool = False
+) -> tuple[dict[str, str], list[str]]:
+    """Ensure every given ``/``-separated folder path exists remotely.
+
+    Parents are created before children (via ``parentUid``) so the Grafana
+    folder hierarchy mirrors the local directory structure. Returns the
+    ``{path: uid}`` map (including folders that already existed) and the list
+    of paths that were (or, in dry-run, would be) created.
+    """
+    folders = _all_folders(client)
+    created: list[str] = []
+    for path in sorted({p for p in paths if p}, key=lambda p: (p.count("/"), p)):
+        if path in folders:
+            continue
+        parent_path, _, title = path.rpartition("/")
+        parent_uid = folders.get(parent_path, "")
+        if dry_run:
+            folders[path] = ""
+            created.append(path)
+            continue
+        payload = {"title": title}
+        if parent_uid:
+            payload["parentUid"] = parent_uid
+        folder = client.request_json("POST", "/api/folders", json=payload) or {}
+        folders[path] = folder.get("uid", "")
+        created.append(path)
+    return folders, created
 
 
 def _get_existing(client: auth.GrafanaClient, namespace: str, uid: str):
@@ -67,8 +124,11 @@ def _collect_files(args) -> list[tuple[str, Path]]:
     if args.file:
         path = Path(args.file)
         folder = path.parent.name
-        if path.parent.resolve() == source.resolve():
-            folder = ""
+        try:
+            rel = path.resolve().relative_to(source.resolve())
+            folder = "" if rel.parent == Path(".") else rel.parent.as_posix()
+        except ValueError:
+            pass
         return [(folder, path)]
     if args.folder:
         return [(args.folder, p) for p in sorted((source / args.folder).glob("*.json"))]
@@ -76,7 +136,7 @@ def _collect_files(args) -> list[tuple[str, Path]]:
         files = []
         for p in sorted(source.rglob("*.json")):
             rel = p.relative_to(source)
-            folder = rel.parent.name if str(rel.parent) != "." else ""
+            folder = "" if rel.parent == Path(".") else rel.parent.as_posix()
             files.append((folder, p))
         return files
     return []
@@ -119,9 +179,30 @@ def main(args) -> int:
         return 2
 
     client = auth.get_client()
-    folder_cache: dict[str, str] = {}
+    type_to_uid = state.datasource_type_to_uid()
+    if not type_to_uid:
+        print(
+            "warning: no datasource snapshot (run 'discover'); "
+            "datasource placeholders will be uploaded unresolved",
+            file=sys.stderr,
+        )
 
+    # Phase 1: mirror the local directory tree into Grafana folders, then keep
+    # the exact {path: uid} map for the upload phase.
+    folder_paths = {folder for folder, _ in files} | _local_folder_paths(
+        Path(args.source)
+    )
+    folder_map, created_folders = ensure_folders(client, folder_paths, args.dry_run)
+    if created_folders:
+        action = "would create" if args.dry_run else "created"
+        print(f"folders {action} ({len(created_folders)}):")
+        for path in created_folders:
+            print(f"  + {path}")
+    print(f"folder tree resolved: {len(folder_paths)} path(s)")
+
+    # Phase 2: upload each dashboard into its pre-resolved folder.
     ok, failed = 0, 0
+    seen_uids: dict[str, str] = {}
     for folder_name, path in files:
         try:
             doc = json.loads(path.read_text())
@@ -130,24 +211,50 @@ def main(args) -> int:
             failed += 1
             continue
 
+        transform.normalize_datasources(doc, rules.DATASOURCE_ALIASES, type_to_uid)
+        if dashboard.is_v2_dashboard(doc):
+            # Drop server-side metadata (uid/resourceVersion/...) so the PUT
+            # doesn't fail its UID precondition against the stored object.
+            transform.clean_v2_metadata(doc)
+        else:
+            transform.clean_classic(doc)
+            if not doc.get("uid"):
+                doc["uid"] = str(
+                    uuid.uuid5(uuid.NAMESPACE_DNS, f"{folder_name}/{path.name}")
+                )
+
         title = dashboard.dashboard_title(doc)
         fmt = "v2" if dashboard.is_v2_dashboard(doc) else "classic"
         uid = doc.get("uid") or ((doc.get("metadata") or {}).get("name"))
-        display = path.name if folder_name else f"{folder_name}/{path.name}"
+        display = f"{folder_name}/{path.name}" if folder_name else path.name
+
+        # Two local files may share a uid; reassign deterministically so both
+        # survive instead of overwriting each other.
+        if uid:
+            if uid in seen_uids:
+                new_uid = str(
+                    uuid.uuid5(uuid.NAMESPACE_DNS, f"{folder_name}/{path.name}")
+                )
+                if dashboard.is_v2_dashboard(doc):
+                    doc["metadata"]["name"] = new_uid
+                else:
+                    doc["uid"] = new_uid
+                print(f"  note: duplicate uid {uid!r} -> {new_uid}")
+                uid = new_uid
+            seen_uids[uid] = display
 
         print(f"{title!r}  [{fmt}]  {display}")
-        print(f"  uid={uid}  folder={folder_name or '(root)'}")
+        print(
+            f"  uid={uid}  folder={folder_name or '(root)'}  "
+            f"folderUid={folder_map.get(folder_name, '') or '-'}"
+        )
 
         if args.dry_run:
             ok += 1
             continue
 
         try:
-            if folder_name not in folder_cache:
-                folder_cache[folder_name] = ensure_grafana_folder(
-                    client, folder_name
-                ).get("uid", "")
-            folder_uid = folder_cache[folder_name]
+            folder_uid = folder_map.get(folder_name, "")
 
             if dashboard.is_v2_dashboard(doc):
                 upload_v2(client, doc, folder_uid, args.namespace)

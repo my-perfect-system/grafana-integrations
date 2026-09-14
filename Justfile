@@ -54,9 +54,23 @@ upload: setup
 upload-dry: setup
     {{activate}} python -m src upload --all --dry-run
 
+# Upload dashboards under dashboards/tested/, mirroring the folder tree
+upload-tested: setup
+    {{activate}} python -m src upload --all --source dashboards/tested
+
+# Upload dashboards under dashboards/tested/ (dry-run, print intended requests only)
+upload-tested-dry: setup
+    {{activate}} python -m src upload --all --source dashboards/tested --dry-run
+
+# Remove generated/temporary files (dashboards/normalized + data/state)
+clean:
+    rm -rf dashboards/normalized data/state
+    @echo "removed: dashboards/normalized data/state"
+    @echo "note: run 'just discover' (and 'just metrics') again before uploading"
+
 # Full pipeline: discover -> metrics -> normalize -> verify -> upload
 # (verify is report-only here: it prints findings but never blocks the upload)
-pipeline: setup
+pipeline: clean setup
     {{activate}} python -m src discover
     {{activate}} python -m src metrics
     {{activate}} python -m src normalize
