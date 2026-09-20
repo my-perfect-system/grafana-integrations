@@ -62,6 +62,14 @@ upload-tested: setup
 upload-tested-dry: setup
     {{activate}} python -m src upload --all --source dashboards/tested --dry-run
 
+# Upload alert rule groups from alerts/, mirroring their folder tree
+upload-alerts: setup
+    {{activate}} python -m src upload-alerts --all
+
+# Upload alert rule groups from alerts/ (dry-run, print intended requests only)
+upload-alerts-dry: setup
+    {{activate}} python -m src upload-alerts --all --dry-run
+
 # Remove generated/temporary files (dashboards/normalized + data/state)
 clean:
     rm -rf dashboards/normalized data/state

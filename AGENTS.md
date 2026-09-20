@@ -7,12 +7,13 @@ references, mirror a local folder tree to Grafana folders, and upload.
 
 | Path | Purpose |
 |---|---|
-| `src/commands/` | CLI subcommands: `check`, `discover`, `metrics`, `normalize`, `verify`, `upload` |
+| `src/commands/` | CLI subcommands: `check`, `discover`, `metrics`, `normalize`, `verify`, `upload`, `upload-alerts` |
 | `src/helpers/` | dashboard parsing, normalization rules/transforms |
 | `src/core/` | settings, auth (`data/.env`), discovery state (`data/state/`) |
 | `dashboards/tested/` | **Source of truth for uploads** (see below) |
 | `dashboards/normalized/` | Output of `normalize` (not used by `upload-tested`) |
 | `dashboards/{needs_fix,untested}/` | Staging / not part of the upload flow |
+| `alerts/` | **Source of truth for alert rule groups** (see below) |
 | `Justfile` | Task runner entry points |
 
 ## Justfile
@@ -21,6 +22,8 @@ references, mirror a local folder tree to Grafana folders, and upload.
 just check              # verify Grafana connectivity/auth
 just upload-tested      # upload dashboards/tested/, mirroring its folder tree
 just upload-tested-dry  # dry-run: print folders + intended uploads
+just upload-alerts      # upload alert rule groups from alerts/
+just upload-alerts-dry  # dry-run: print groups/rules + folders
 just normalize          # rewrite tested/ -> normalized/ (preserves nested tree)
 just upload             # upload dashboards/normalized/
 just pipeline           # discover -> metrics -> normalize -> verify -> upload
@@ -30,6 +33,43 @@ just clean              # remove generated files (normalized/, data/state/)
 `upload-tested` is the command to use for our dashboards. It only reads
 `dashboards/tested/`; ignore everything outside it. `normalize` preserves the
 nested folder structure, so the `pipeline`/`upload` flow mirrors it too.
+
+## Alerts (`alerts/`)
+
+`alerts/` is the source of truth for Grafana-managed alert rules, mirroring the
+Grafana folder tree like `dashboards/tested/`. **One JSON file = one rule
+group** in the Grafana Alerting provisioning format:
+
+```json
+{
+  "folder": "my-perfect-system/meta-monitoring",
+  "orgId": 1,
+  "title": "alloy-health",
+  "interval": 60,
+  "rules": [
+    {
+      "uid": "alloy-target-down",
+      "title": "Alloy target down",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "data": [ ]
+    }
+  ]
+}
+```
+
+- `folder` is a Grafana folder **path** (created/mirrored like dashboard
+  folders); use `folderUid` to target a folder directly.
+- `data[].datasourceUid` uses aliases (`${DS_PROMETHEUS}`, `${DS_LOKI}`),
+  resolved from `data/state/datasources.json`; `__expr__` is left untouched.
+- Upload with `just upload-alerts` (`src/commands/upload_alerts.py`). It is
+  idempotent: each group is upserted via
+  `PUT /api/v1/provisioning/folder/{folderUid}/rule-groups/{group}`, so the
+  local file is the source of truth for that group. Uploads send
+  `X-Disable-Provenance: true` so rules stay editable in the Grafana UI
+  (provenance is not set).
 
 ## Dashboard storage layout (tested/)
 

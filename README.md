@@ -42,6 +42,8 @@ also export `GRAFANA_URL` / `GRAFANA_TOKEN` (and optionally
 | `just verify` | Cross-check normalized dashboards against the instance snapshots |
 | `just upload-tested` | **Upload `dashboards/tested/`, mirroring its folder tree** |
 | `just upload-tested-dry` | Dry-run: print folders + intended uploads, no writes |
+| `just upload-alerts` | **Upload alert rule groups from `alerts/`, mirroring their folder tree** |
+| `just upload-alerts-dry` | Dry-run: print groups/rules + intended folders, no writes |
 | `just upload` | Upload `dashboards/normalized/` (the normalize-based flow) |
 | `just clean` | Remove generated files (`dashboards/normalized/`, `data/state/`) |
 | `just pipeline` | `discover → metrics → normalize → verify → upload` (mirrors the folder tree) |
@@ -85,6 +87,20 @@ Directories are categories. On upload, the path relative to
 folder `my-perfect-system` → `hardware`. Empty/legacy folders are left for you
 to clean up.
 
+## Alerts layout
+
+```
+alerts/
+  my-perfect-system/
+    meta-monitoring/
+      alloy-health.json
+```
+
+Each JSON file is **one alert rule group** (Grafana Alerting provisioning
+format) with a `folder` path, `title`, `interval` and `rules`. Uploads are
+idempotent and mirror the folder path into Grafana folders. See
+[`alerts/README.md`](alerts/README.md) for the full format.
+
 ## Upload behaviour
 
 The upload command (`just upload-tested` and `just upload`) runs in two phases:
@@ -117,5 +133,6 @@ tag and a single own-category link. The full standard is in
 | `src/core/` | settings, auth, discovery state |
 | `dashboards/tested/` | source of truth for `upload-tested` |
 | `dashboards/normalized/` | output of `normalize` (git-ignored) |
+| `alerts/` | source of truth for `upload-alerts` (alert rule groups) |
 | `data/state/` | discovery/metrics snapshots (git-ignored) |
 | `Justfile` | task runner entry points |

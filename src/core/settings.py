@@ -13,6 +13,7 @@ REPO_ROOT = SRC_DIR.parent
 
 DASHBOARDS_DIR = REPO_ROOT / "dashboards" / "tested"
 NORMALIZED_DIR = REPO_ROOT / "dashboards" / "normalized"
+ALERTS_DIR = REPO_ROOT / "alerts"
 STATE_DIR = REPO_ROOT / "data" / "state"
 
 DATASOURCES_STATE = STATE_DIR / "datasources.json"

@@ -470,7 +470,14 @@
                     "options": {
                       "excludeByName": {
                         "Time": true,
-                        "__name__": true
+                        "__name__": true,
+                        "mps_alloy_arch": true,
+                        "mps_alloy_hostname": true,
+                        "mps_alloy_os_name": true,
+                        "mps_alloy_os_type": true,
+                        "mps_alloy_physloc": true,
+                        "mps_alloy_systype": true,
+                        "mps_alloy_version": true
                       },
                       "indexByName": {
                         "job": 0,
@@ -602,7 +609,14 @@
                     "options": {
                       "excludeByName": {
                         "Time": true,
-                        "__name__": true
+                        "__name__": true,
+                        "mps_alloy_arch": true,
+                        "mps_alloy_hostname": true,
+                        "mps_alloy_os_name": true,
+                        "mps_alloy_os_type": true,
+                        "mps_alloy_physloc": true,
+                        "mps_alloy_systype": true,
+                        "mps_alloy_version": true
                       },
                       "indexByName": {
                         "job": 0,
@@ -2954,6 +2968,89 @@
             }
           }
         }
+      },
+      "panel-59": {
+        "kind": "Panel",
+        "spec": {
+          "id": 59,
+          "title": "Top targets by samples",
+          "description": "Scrape targets with the most series.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sort_desc(topk(10, scrape_samples_scraped))",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{job}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "bargauge",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "displayMode": "lcd",
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "left",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [],
+                  "fields": "",
+                  "values": true
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "continuous-GrYlRd"
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
       }
     },
     "layout": {
@@ -3266,6 +3363,19 @@
                         "height": 9,
                         "element": {
                           "kind": "ElementReference",
+                          "name": "panel-59"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 10,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
                           "name": "panel-11"
                         }
                       }
@@ -3412,59 +3522,59 @@
     },
     "links": [
       {
-        "asDropdown": true,
-        "icon": "dashboard",
-        "includeVars": true,
-        "keepTime": true,
+        "type": "dashboards",
+        "title": "My Perfect System",
         "tags": [
           "my-perfect-system"
         ],
-        "targetBlank": false,
-        "title": "My Perfect System",
-        "tooltip": "All my-perfect-system dashboards",
-        "type": "dashboards",
-        "url": ""
-      },
-      {
         "asDropdown": true,
         "icon": "dashboard",
         "includeVars": true,
         "keepTime": true,
+        "targetBlank": false,
+        "tooltip": "All my-perfect-system dashboards",
+        "url": ""
+      },
+      {
+        "type": "dashboards",
+        "title": "Host",
         "tags": [
           "my-perfect-system-host"
         ],
-        "targetBlank": false,
-        "title": "Host",
-        "tooltip": "Host dashboards",
-        "type": "dashboards",
-        "url": ""
-      },
-      {
         "asDropdown": true,
         "icon": "dashboard",
         "includeVars": true,
         "keepTime": true,
+        "targetBlank": false,
+        "tooltip": "Host dashboards",
+        "url": ""
+      },
+      {
+        "type": "dashboards",
+        "title": "Logs",
         "tags": [
           "my-perfect-system-logs"
         ],
-        "targetBlank": false,
-        "title": "Logs",
-        "tooltip": "Logs dashboards",
-        "type": "dashboards",
-        "url": ""
-      },
-      {
         "asDropdown": true,
         "icon": "dashboard",
         "includeVars": true,
         "keepTime": true,
+        "targetBlank": false,
+        "tooltip": "Logs dashboards",
+        "url": ""
+      },
+      {
+        "type": "dashboards",
+        "title": "Meta-Monitoring",
         "tags": [
           "my-perfect-system-meta-monitoring"
         ],
+        "asDropdown": true,
+        "icon": "dashboard",
+        "includeVars": true,
+        "keepTime": true,
         "targetBlank": false,
-        "title": "Meta-Monitoring",
         "tooltip": "Meta-Monitoring dashboards",
-        "type": "dashboards",
         "url": ""
       }
     ],
@@ -3498,7 +3608,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "Prometheus Metrics",
+    "title": "Prometheus",
     "variables": []
   }
 }

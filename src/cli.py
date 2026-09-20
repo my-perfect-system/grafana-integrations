@@ -12,6 +12,7 @@ Commands
     normalize  rewrite dashboards (datasources, metric names, cleanup)
     verify     cross-check normalized dashboards against instance snapshots
     upload     upload normalized dashboards to the instance
+    upload-alerts  upload alert rule groups from alerts/ to the instance
     check      test connectivity and authentication
 
 Workflow
@@ -38,10 +39,11 @@ from commands import (  # noqa: E402
     metrics,
     normalize,
     upload,
+    upload_alerts,
     verify,
 )
 
-_COMMANDS = (discover, metrics, normalize, verify, upload, check)
+_COMMANDS = (discover, metrics, normalize, verify, upload, upload_alerts, check)
 
 
 def build_parser() -> argparse.ArgumentParser:
