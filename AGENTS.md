@@ -211,7 +211,7 @@ dashboards/tested/
     cluster/               # 1
     host/                  # 6  (tabbed: CPU, Disks, HwMon, Memory, Network, System)
     logs/                  # 8
-    meta/                  # 8
+    meta/                  # 5  (tabbed v2: Prometheus, Loki, Grafana, Alloy + Alerts)
     services/              # 3  (tabbed v2: Ollama Metrics, Llama.cpp Metrics, GPU (AMD))
   public/                  # third-party / imported dashboards (minimal changes)
     blackbox/              # 1
@@ -261,8 +261,8 @@ tags".
     row).
   - `Statistics` tab: `Overview` → `Composition` → `Rankings` → `Inventory`.
 - `logs`: `Overview` → `Timeline` → `Top lists` → `Details` → `Raw logs`
-- `meta`: `Overview` → `Timeline` → `Top lists` →
-  `Content & users` → `Alerts & policies` → `Details`
+- `meta` (v2, tabbed — Performance template, see §10): tabs `Overview` /
+  `Health` / `Stats` / `Averages` / `Scrape` / domain tabs (see §10)
 - `cluster` (v2): tabs `Metrics` / `Logs` / `Monitoring`, each with
   `Overview` / `Timeline` / `Details` (+ domain rows such as
   `Prometheus` / `Loki` / `Grafana` in the Monitoring tab).
@@ -350,12 +350,12 @@ Resource dashboards are titled `CPU`, `Disks`, `HwMon`, `Memory`, `Network`,
 `System` (all under `host/`); their tabs are always `Summary`,
 `Series`, `Statistics` (see §8). Other titles: `Cluster Summary`, the
 `<Topic> Log Analysis` log dashboards, the `<Service> Metrics` service
-dashboards plus `GPU (AMD)` (`my-perfect-system/services/`), and the
-cross-service `Alerts` dashboard
-(`my-perfect-system/meta/`, rows `Overview` → `Timeline` → `Groups` →
-`Alert rules`; its centerpiece is the native **Alert list** panel — the
-`datasource` plugin has no alert query type in Grafana 13, so per-rule alert
-tables must use `alertlist`, which needs no datasource reference).
+dashboards plus `GPU (AMD)` (`my-perfect-system/services/`), and the meta
+dashboards `Prometheus`, `Loki`, `Grafana`, `Alloy` and the cross-service
+`Alerts` dashboard (`my-perfect-system/meta/`, rows `Overview` → `Timeline` →
+`Groups` → `Alert rules`; its centerpiece is the native **Alert list** panel —
+the `datasource` plugin has no alert query type in Grafana 13, so per-rule
+alert tables must use `alertlist`, which needs no datasource reference).
 
 ### 8. Resource dashboards (tabbed — Summary / Series / Statistics)
 
@@ -530,6 +530,100 @@ build the wide table from a single query instead:
 All resource dashboards are **v2** (`apiVersion: dashboard.grafana.app/v2`,
 `kind: Dashboard`, `spec.*`) with a top-level `TabsLayout`; each tab holds a
 `RowsLayout`. `just upload-tested` strips v2 server metadata on upload.
+
+---
+
+## Standard: `meta/*` (Performance template) — §10
+
+The meta dashboards are **one consolidated tabbed v2 dashboard per monitoring
+backend service**, built on the Performance template (the former per-service
+base + performance dashboard pairs were merged into these and removed).
+
+| Dashboard | File | uid (`metadata.name`) | Tabs |
+|---|---|---|---|
+| `Prometheus` | `meta/dashboard_prometheus.json` | `meta-prometheus` | Overview / Health / Stats / Compositions / Details / Averages / Scrape / Ingest / Head & Series / Storage & Compaction / Query & API / Jobs & Targets |
+| `Loki` | `meta/dashboard_loki.json` | `meta-loki` | Overview / Health / Stats / Compositions / Details / Averages / Scrape / Streams & Labels / Throughput / Chunks & Flush / Query & Ring |
+| `Grafana` | `meta/dashboard_grafana.json` | `meta-grafana` | Overview / Health / Stats / Compositions / Details / Averages / Scrape / HTTP & API / Datasource / Users & Auth / Content & Inventory |
+| `Alloy` | `meta/dashboard_alloy.json` | `meta-alloy` | Overview / Health / Details / Averages / Scrape / Components |
+| `Alerts` | `meta/dashboard_alerts.json` | `alerts-metrics` | (cross-service, own layout — see §7) |
+
+### 10.1 Tab recipes
+
+- **`Overview`** — stat panels sit **directly in the tab root** (no section
+  headers); **exactly 6 stat panels per grid line** (`w=4`, `h=3`, instant
+  queries). Ordering is by importance and category, without labels: the
+  `<Service> Up` panel is top-left, followed by `Total alerts` and
+  `Firing alerts` (per-component alert counts — `Total alerts` is a native
+  stat counting the alert rules in the component's Grafana rule group via
+  `grafana_alerting_rule_group_rules{rule_group=~".*;<group>"`;   `Firing
+  alerts` is a native stat counting
+  `count(count_over_time(GRAFANA_ALERTS{view="meta", service=<svc>,
+  grafana_alertstate="alerting"}[$__range]))` — coupled to the user's
+  chosen dashboard range (Grafana writes
+  `GRAFANA_ALERTS` on alert state transitions via
+  `[unified_alerting.state_history]` backend=prometheus, which requires the
+  datasource's `prometheusType: "Prometheus"` and the Prometheus
+  remote-write receiver), then the other "something is
+  off" panels (error/failure counters, alert state), then the remaining
+  stats grouped by category in reading order.
+- **`Averages`** — the headline rates averaged over the dashboard range, as
+  timeseries arranged **three per line** (`w=8`, `h=9`; a lone panel takes
+  the full width): rate-based stats derive
+  their query from the Overview stat with `[5m]` widened to `[$__range]`
+  (`sum(rate(...[$__range]))`); gauge stats become
+  `avg(avg_over_time(<metric>{...}[$__range]))` — wrapped in `avg(...)` so
+  every Averages panel is exactly **one series** even when the metric exports
+  several (per instance/host). Title suffix `… avg`; the panel
+  unit is copied from the source stat.
+- **`Compositions`** — the piecharts (one row, legend docked `bottom` so long
+  label names wrap and the value/percent columns stay visible).
+- **`Details`** — the full-width tables (`Scrape health per job`, …), with
+  the **`Build info` table always last** (very bottom of the Details page).
+- **`Stats`** — **toplist | table pairs**:
+  every row is a toplist (bargauge) on the **left** (`w=12`, `h=9`) and its
+  table on the **right** — an existing matching table where available,
+  otherwise a table twin of the same ranking.
+- **Domain tabs** — the service's detailed timeseries, 2 per line
+  (`w=12`, `h=8`); a lone panel takes the full width. Grid heights are
+  integers (fractional heights are rejected by the API).
+- **Tab order** — `Overview` / `Health` / `Stats` / `Averages` / `Scrape` /
+  remaining domain tabs. `Health` is the service's health tab (Prometheus and
+  Loki: the former `WAL & Health`; Grafana: the former `Alerting & Health`;
+  Alloy: `Up`, `Config Load OK`, `Config Failures/s`). The `<Service> Up`
+  series (e.g. `Prometheus Up`, `Loki Up`) is always the **top-left panel**
+  of the Health tab.
+- **Scrape panels** — the scrape-specific panels (`Samples per scrape`,
+  `Scrape issues`, `Scrape duration`) make up the `Scrape` tab. On Prometheus
+  the ingest rate series (`Samples/s`, `Exemplars/s`, `Scrapes/s`,
+  `New series added (1h)`) live in a separate `Ingest` tab directly after
+  `Scrape`.
+
+### 10.2 Cross-cutting rules
+
+- Theme, tags (`<service>` + `my-perfect-system` + `meta-monitoring` +
+  `my-perfect-system-meta`), the 4 standard links, time `now-6h` → `now`,
+  refresh `1m` (the Performance family deviates from §3 on purpose).
+- Datasource alias `${DS_PROMETHEUS}` for every backend service.
+- Job labels are ground truth from the alert rules: `prometheus`,
+  `monitoring-loki`, `monitoring-grafana`;
+  Alloy queries use `job="integrations/self"`.
+- **Series colours** — every timeseries panel uses `palette-classic` (never
+  threshold/continuous colouring, which paints whole panels green or red).
+  Query colours are pinned **per panel** via `byFrameRefID` overrides:
+  first query `green` (#73BF69), second `yellow` (#FADE2A), third `blue`
+  (#5794F2), fourth `red` (#F2495C). This applies to all multi-query panels
+  (including templated legends) and to single-series single-query panels.
+  Single-query panels with dynamic grouped series (e.g. `by (job)`) stay on
+  the plain palette (first line green, second yellow).
+- **Overview stat style** — Overview stats use `options.colorMode: "value"`
+  with a green base threshold step (existing alert steps kept on top); the
+  themed `background_solid` base colours of §1 are not used on the meta
+  Performance template. Every stat shows the **percent change**
+  (`showPercentChange: true`, `percentChangeColorMode: "standard"`) and uses
+  a uniform value font size (`text.valueSize: 25`).
+- Depth lives as tabs: per-target/per-component detail in the domain tabs,
+  service-level in `Overview`/`Averages`/`Stats`; the stack-level summary
+  lives in `Cluster Summary` → `Monitoring`.
 
 ---
 

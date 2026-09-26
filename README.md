@@ -76,15 +76,15 @@ run `just discover` (and `just metrics`) again before the next upload.
 ```
 dashboards/tested/
   my-perfect-system/       # our curated dashboards (full standard)
-    cluster/  hardware/  host/  logs/  meta/
+    cluster/  host/  logs/  meta/  services/
   public/                  # third-party/imported dashboards (minimal changes)
     blackbox/  docker/  host/  meta/  sms/
 ```
 
 Directories are categories. On upload, the path relative to
 `dashboards/tested/` becomes the Grafana folder path — e.g.
-`my-perfect-system/hardware/dashboard_cpu.json` lands in the nested Grafana
-folder `my-perfect-system` → `hardware`. Empty/legacy folders are left for you
+`my-perfect-system/host/dashboard_cpu.json` lands in the nested Grafana
+folder `my-perfect-system` → `host`. Empty/legacy folders are left for you
 to clean up.
 
 ## Alerts layout

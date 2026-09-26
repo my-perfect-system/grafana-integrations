@@ -2,7 +2,7 @@
   "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
   "metadata": {
-    "name": "prometheus-metrics-streams",
+    "name": "meta-prometheus",
     "namespace": "default"
   },
   "spec": {
@@ -30,39 +30,6 @@
     "cursorSync": "Off",
     "editable": true,
     "elements": {
-      "g-a-header": {
-        "kind": "Panel",
-        "spec": {
-          "id": 1,
-          "title": "Scrape & Ingest",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "text",
-            "version": "0.0.1",
-            "spec": {
-              "options": {
-                "content": "**Scrape & Ingest**",
-                "mode": "markdown"
-              },
-              "fieldConfig": {
-                "defaults": {},
-                "overrides": []
-              }
-            }
-          },
-          "transparent": true
-        }
-      },
       "o1-samples-rate": {
         "kind": "Panel",
         "spec": {
@@ -217,7 +184,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -254,7 +221,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -414,7 +397,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -451,7 +434,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -611,7 +610,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -648,7 +647,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -816,7 +831,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -853,43 +868,26 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
-        }
-      },
-      "g-b-header": {
-        "kind": "Panel",
-        "spec": {
-          "id": 10,
-          "title": "Head & Series",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "text",
-            "version": "0.0.1",
-            "spec": {
-              "options": {
-                "content": "**Head & Series**",
-                "mode": "markdown"
-              },
-              "fieldConfig": {
-                "defaults": {},
-                "overrides": []
-              }
-            }
-          },
-          "transparent": true
         }
       },
       "o5-head-series": {
@@ -1046,7 +1044,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -1083,7 +1081,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -1243,7 +1257,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -1280,7 +1294,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -1440,7 +1470,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -1477,7 +1507,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -1637,7 +1683,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -1674,43 +1720,26 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
-        }
-      },
-      "g-c-header": {
-        "kind": "Panel",
-        "spec": {
-          "id": 19,
-          "title": "Storage & Compaction",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "text",
-            "version": "0.0.1",
-            "spec": {
-              "options": {
-                "content": "**Storage & Compaction**",
-                "mode": "markdown"
-              },
-              "fieldConfig": {
-                "defaults": {},
-                "overrides": []
-              }
-            }
-          },
-          "transparent": true
         }
       },
       "o9-storage": {
@@ -1867,7 +1896,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -1904,7 +1933,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -2064,7 +2109,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -2101,7 +2146,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -2261,7 +2322,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -2298,7 +2359,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -2466,7 +2543,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -2503,43 +2580,26 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
-        }
-      },
-      "g-d-header": {
-        "kind": "Panel",
-        "spec": {
-          "id": 28,
-          "title": "WAL & Health",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "text",
-            "version": "0.0.1",
-            "spec": {
-              "options": {
-                "content": "**WAL & Health**",
-                "mode": "markdown"
-              },
-              "fieldConfig": {
-                "defaults": {},
-                "overrides": []
-              }
-            }
-          },
-          "transparent": true
         }
       },
       "o13-up": {
@@ -2631,7 +2691,7 @@
         "kind": "Panel",
         "spec": {
           "id": 30,
-          "title": "Up",
+          "title": "Prometheus Up",
           "description": "1 when the target is scraped successfully, 0 when it is down.",
           "links": [],
           "data": {
@@ -2652,7 +2712,7 @@
                         "editorMode": "code",
                         "expr": "max(up{job=\"prometheus\"})",
                         "instant": false,
-                        "legendFormat": "Up",
+                        "legendFormat": "Prometheus Up",
                         "range": true
                       }
                     },
@@ -2704,7 +2764,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -2741,7 +2801,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -2909,7 +2985,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -2946,7 +3022,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -3106,7 +3198,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -3143,7 +3235,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -3311,7 +3419,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -3348,43 +3456,26 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
-        }
-      },
-      "g-e-header": {
-        "kind": "Panel",
-        "spec": {
-          "id": 37,
-          "title": "Query & API",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "text",
-            "version": "0.0.1",
-            "spec": {
-              "options": {
-                "content": "**Query & API**",
-                "mode": "markdown"
-              },
-              "fieldConfig": {
-                "defaults": {},
-                "overrides": []
-              }
-            }
-          },
-          "transparent": true
         }
       },
       "o17-queries-rate": {
@@ -3541,7 +3632,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -3578,7 +3669,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -3754,7 +3861,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -3791,7 +3898,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -3951,7 +4074,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -3988,7 +4111,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -4156,7 +4295,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -4193,7 +4332,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -4244,7 +4399,7 @@
               "options": {
                 "legend": {
                   "displayMode": "table",
-                  "placement": "right",
+                  "placement": "bottom",
                   "showLegend": true,
                   "values": [
                     "value",
@@ -4330,7 +4485,7 @@
               "options": {
                 "legend": {
                   "displayMode": "table",
-                  "placement": "right",
+                  "placement": "bottom",
                   "showLegend": true,
                   "values": [
                     "value",
@@ -4395,7 +4550,7 @@
                       "spec": {
                         "expr": "topk(10, avg by (job) (scrape_duration_seconds))",
                         "instant": true,
-                        "legendFormat": "{{route}}",
+                        "legendFormat": "{{job}}",
                         "range": false
                       }
                     },
@@ -4522,7 +4677,7 @@
                       "spec": {
                         "expr": "sort_desc(topk(10, scrape_samples_scraped))",
                         "instant": true,
-                        "legendFormat": "{{route}}",
+                        "legendFormat": "{{mps_alloy_hostname}} {{job}}",
                         "range": false
                       }
                     },
@@ -5077,9 +5232,43 @@
                     "fillOpacity": 10,
                     "lineWidth": 2,
                     "showPoints": "never"
+                  },
+                  "color": {
+                    "mode": "palette-classic"
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "B"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "yellow"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -5159,7 +5348,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "connectNulls": true,
@@ -5172,7 +5361,23 @@
                     }
                   }
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             }
           }
@@ -5273,7 +5478,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "custom": {
                     "connectNulls": true,
@@ -5290,33 +5495,2907 @@
                   {
                     "matcher": {
                       "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
                       "options": "B"
                     },
                     "properties": [
                       {
                         "id": "color",
                         "value": {
-                          "fixedColor": "purple",
-                          "mode": "fixedColor"
+                          "mode": "fixed",
+                          "fixedColor": "yellow"
                         }
-                      },
-                      {
-                        "id": "custom.lineStyle",
-                        "value": {
-                          "dash": [
-                            8,
-                            8
-                          ],
-                          "fill": "dash"
-                        }
-                      },
-                      {
-                        "id": "custom.lineWidth",
-                        "value": 3
                       }
                     ]
                   }
                 ]
+              }
+            }
+          }
+        }
+      },
+      "o56-targets-up": {
+        "kind": "Panel",
+        "spec": {
+          "id": 56,
+          "title": "Targets up",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "count(up == 1) or vector(0)",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": true,
+                "textMode": "auto",
+                "wideLayout": true,
+                "text": {
+                  "valueSize": 25
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "o57-targets-down": {
+        "kind": "Panel",
+        "spec": {
+          "id": 57,
+          "title": "Targets down",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "count(up == 0) or vector(0)",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": true,
+                "textMode": "auto",
+                "wideLayout": true,
+                "text": {
+                  "valueSize": 25
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "o58-memory": {
+        "kind": "Panel",
+        "spec": {
+          "id": 58,
+          "title": "Memory",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "process_resident_memory_bytes{job=\"prometheus\"}",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": true,
+                "textMode": "auto",
+                "wideLayout": true,
+                "text": {
+                  "valueSize": 25
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "unit": "bytes"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "o59-series-churn-s": {
+        "kind": "Panel",
+        "spec": {
+          "id": 59,
+          "title": "Series churn/s",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sum(rate(prometheus_tsdb_head_series_created_total{job=\"prometheus\"}[5m])) - sum(rate(prometheus_tsdb_head_series_removed_total{job=\"prometheus\"}[5m]))",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": true,
+                "textMode": "auto",
+                "wideLayout": true,
+                "text": {
+                  "valueSize": 25
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "unit": "cps"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "avg1-samples-s-avg": {
+        "kind": "Panel",
+        "spec": {
+          "id": 60,
+          "title": "Samples/s avg",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "sum(rate(prometheus_tsdb_head_samples_appended_total{job=\"prometheus\"}[$__range]))",
+                        "instant": false,
+                        "legendFormat": "Samples/s avg",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "line"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "avg2-scrapes-s-avg": {
+        "kind": "Panel",
+        "spec": {
+          "id": 61,
+          "title": "Scrapes/s avg",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "sum(rate(prometheus_target_interval_length_seconds_count{job=\"prometheus\"}[$__range]))",
+                        "instant": false,
+                        "legendFormat": "Scrapes/s avg",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "line"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "avg3-queries-s-avg": {
+        "kind": "Panel",
+        "spec": {
+          "id": 62,
+          "title": "Queries/s avg",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "sum(rate(prometheus_engine_query_duration_seconds_count{job=\"prometheus\"}[$__range]))",
+                        "instant": false,
+                        "legendFormat": "Queries/s avg",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "line"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "avg4-compactions-s-avg": {
+        "kind": "Panel",
+        "spec": {
+          "id": 63,
+          "title": "Compactions/s avg",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "sum(rate(prometheus_tsdb_compactions_total{job=\"prometheus\"}[$__range]))",
+                        "instant": false,
+                        "legendFormat": "Compactions/s avg",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "ops",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "line"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "avg5-head-series-avg": {
+        "kind": "Panel",
+        "spec": {
+          "id": 64,
+          "title": "Head series avg",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "avg(avg_over_time(prometheus_tsdb_head_series{job=\"prometheus\"}[$__range]))",
+                        "instant": false,
+                        "legendFormat": "Head series avg",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "line"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "avg6-wal-size-avg": {
+        "kind": "Panel",
+        "spec": {
+          "id": 65,
+          "title": "WAL size avg",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "avg(avg_over_time(prometheus_tsdb_wal_storage_size_bytes{job=\"prometheus\"}[$__range]))",
+                        "instant": false,
+                        "legendFormat": "WAL size avg",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "bytes",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "line"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "st66-top-jobs-by-samples": {
+        "kind": "Panel",
+        "spec": {
+          "id": 66,
+          "title": "Top jobs by samples",
+          "description": "Scrape targets with the most series.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sort_desc(topk(10, sum by (job) (scrape_samples_scraped)))",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{job}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "bargauge",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "displayMode": "gradient",
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": true
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "continuous-BlPu"
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "st67-down-targets": {
+        "kind": "Panel",
+        "spec": {
+          "id": 67,
+          "title": "Down targets",
+          "description": "Targets currently down (empty is good).",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "up == 0",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "labelsToFields",
+                  "spec": {
+                    "options": {
+                      "mode": "columns"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "renameByRegex",
+                  "spec": {
+                    "options": {
+                      "regex": "^up$",
+                      "renamePattern": "status"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true,
+                        "__name__": true,
+                        "mps_alloy_arch": true,
+                        "mps_alloy_hostname": true,
+                        "mps_alloy_os_name": true,
+                        "mps_alloy_os_type": true,
+                        "mps_alloy_physloc": true,
+                        "mps_alloy_systype": true,
+                        "mps_alloy_version": true
+                      },
+                      "indexByName": {
+                        "job": 0,
+                        "instance": 1,
+                        "status": 2
+                      },
+                      "renameByName": {}
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "footer": {
+                  "show": false
+                },
+                "showHeader": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "inspect": false
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "text",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byRegexp",
+                      "options": "/^up$/"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "status"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "st68-top-jobs-by-new-series": {
+        "kind": "Panel",
+        "spec": {
+          "id": 68,
+          "title": "Top jobs by new series",
+          "description": "Jobs contributing the most new series per scrape.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sort_desc(topk(10, sum by (job) (scrape_series_added)))",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{job}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "bargauge",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "displayMode": "gradient",
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": true
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "continuous-BlPu"
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "st69-new-series-by-job": {
+        "kind": "Panel",
+        "spec": {
+          "id": 69,
+          "title": "New series by job",
+          "description": "New series added per scrape, by job.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sort_desc(sum by (job) (scrape_series_added))",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "labelsToFields",
+                  "spec": {
+                    "options": {
+                      "mode": "columns"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "renameByRegex",
+                  "spec": {
+                    "options": {
+                      "regex": ".*Value.*",
+                      "renamePattern": "series"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true,
+                        "__name__": true
+                      },
+                      "indexByName": {
+                        "job": 0,
+                        "series": 1
+                      },
+                      "renameByName": {}
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "footer": {
+                  "show": false
+                },
+                "showHeader": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "inspect": false
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "text",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byRegexp",
+                      "options": "/.*Value.*/"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "series"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "f70-head-series-chunks": {
+        "kind": "Panel",
+        "spec": {
+          "id": 70,
+          "title": "Head series & chunks",
+          "description": "Series and chunks in the head block over time.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "prometheus_tsdb_head_series{job=\"prometheus\"}",
+                        "instant": false,
+                        "legendFormat": "Series",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "prometheus_tsdb_head_chunks{job=\"prometheus\"}",
+                        "instant": false,
+                        "legendFormat": "Chunks",
+                        "range": true
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisGridShow": true,
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 12,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "B"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "yellow"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "f71-series-churn": {
+        "kind": "Panel",
+        "spec": {
+          "id": 71,
+          "title": "Series churn",
+          "description": "Series creation and removal rate.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sum(rate(prometheus_tsdb_head_series_created_total{job=\"prometheus\"}[5m]))",
+                        "instant": false,
+                        "legendFormat": "Created",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sum(rate(prometheus_tsdb_head_series_removed_total{job=\"prometheus\"}[5m]))",
+                        "instant": false,
+                        "legendFormat": "Removed",
+                        "range": true
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisGridShow": true,
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 12,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "unit": "cps"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "A"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byFrameRefID",
+                      "options": "B"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "yellow"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "n72-scrape-duration-by-job": {
+        "kind": "Panel",
+        "spec": {
+          "id": 72,
+          "title": "Scrape duration by job",
+          "description": "Average time Prometheus spends scraping each job.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "avg by (job) (scrape_duration_seconds)",
+                        "instant": false,
+                        "legendFormat": "{{job}}",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisGridShow": true,
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 12,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "n73-series-scraped-by-job": {
+        "kind": "Panel",
+        "spec": {
+          "id": 73,
+          "title": "Series scraped by job",
+          "description": "Number of series scraped per job.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sum by (job) (scrape_samples_scraped)",
+                        "instant": false,
+                        "legendFormat": "{{job}}",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisGridShow": true,
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 12,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "n74-slowest-jobs": {
+        "kind": "Panel",
+        "spec": {
+          "id": 74,
+          "title": "Slowest jobs",
+          "description": "Jobs with the highest average scrape duration.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sort_desc(topk(10, avg by (job) (scrape_duration_seconds)))",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{job}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "bargauge",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "displayMode": "gradient",
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": true
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "continuous-BlPu"
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "n75-jobs-by-scrape-duration": {
+        "kind": "Panel",
+        "spec": {
+          "id": 75,
+          "title": "Jobs by scrape duration",
+          "description": "Average scrape duration per job.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sort_desc(avg by (job) (scrape_duration_seconds))",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "labelsToFields",
+                  "spec": {
+                    "options": {
+                      "mode": "columns"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "renameByRegex",
+                  "spec": {
+                    "options": {
+                      "regex": ".*Value.*",
+                      "renamePattern": "seconds"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true,
+                        "__name__": true
+                      },
+                      "indexByName": {
+                        "job": 0,
+                        "seconds": 1
+                      },
+                      "renameByName": {}
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "footer": {
+                  "show": false
+                },
+                "showHeader": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "inspect": false
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "text",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byRegexp",
+                      "options": "/.*Value.*/"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "seconds"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "stp76-top-jobs-by-scrape-duration-avg-s": {
+        "kind": "Panel",
+        "spec": {
+          "id": 76,
+          "title": "Top jobs by scrape duration avg (s)",
+          "description": "Scrape jobs with the highest average scrape duration.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "expr": "topk(10, avg by (job) (scrape_duration_seconds))",
+                        "instant": true,
+                        "legendFormat": "{{job}}",
+                        "range": false,
+                        "format": "table"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": []
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "s",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "stp77-top-jobs-by-samples": {
+        "kind": "Panel",
+        "spec": {
+          "id": 77,
+          "title": "Top jobs by samples",
+          "description": "Scrape targets with the most series.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sort_desc(topk(10, sum by (job) (scrape_samples_scraped)))",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{job}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": []
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "o60-alerts-total": {
+        "kind": "Panel",
+        "spec": {
+          "id": 78,
+          "title": "Total alerts",
+          "description": "Alert rules in the \"prometheus\" rule group (this component).",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "expr": "max(grafana_alerting_rule_group_rules{job=\"monitoring-grafana\", rule_group=~\".*;prometheus\", type=\"alerting\"}) or vector(0)",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "0.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": true,
+                "text": {
+                  "valueSize": 25
+                },
+                "textMode": "auto"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "o61-alerts-firing": {
+        "kind": "Panel",
+        "spec": {
+          "id": 79,
+          "title": "Firing alerts",
+          "description": "Grafana-managed alert rules (view=meta, this service) that started firing within the selected dashboard range.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "expr": "count(count_over_time(GRAFANA_ALERTS{view=\"meta\", service=\"prometheus\", grafana_alertstate=\"alerting\"}[$__range])) or vector(0)",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "0.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": true,
+                "text": {
+                  "valueSize": 25
+                },
+                "textMode": "auto"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "green"
+                      },
+                      {
+                        "value": 1,
+                        "color": "yellow"
+                      },
+                      {
+                        "value": 5,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "st-pie-codes": {
+        "kind": "Panel",
+        "spec": {
+          "id": 80,
+          "title": "HTTP requests by status code (top 8)",
+          "description": "HTTP request rate split by status code.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "expr": "topk(8, sum by (code) (rate(prometheus_http_requests_total{job=\"prometheus\"}[15m])))",
+                        "instant": false,
+                        "legendFormat": "{{code}}",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "piechart",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "legend": {
+                  "displayMode": "table",
+                  "placement": "bottom",
+                  "showLegend": true,
+                  "values": [
+                    "value",
+                    "percent"
+                  ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "sort": "desc",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "st-pie-appended": {
+        "kind": "Panel",
+        "spec": {
+          "id": 81,
+          "title": "Samples appended by type",
+          "description": "Samples appended to the head block, by sample type.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${DS_PROMETHEUS}"
+                      },
+                      "spec": {
+                        "expr": "sum by (type) (rate(prometheus_tsdb_head_samples_appended_total{job=\"prometheus\"}[15m]))",
+                        "instant": false,
+                        "legendFormat": "{{type}}",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "piechart",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "legend": {
+                  "displayMode": "table",
+                  "placement": "bottom",
+                  "showLegend": true,
+                  "values": [
+                    "value",
+                    "percent"
+                  ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "sort": "desc",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    }
+                  }
+                },
+                "overrides": []
               }
             }
           }
@@ -5340,37 +8419,37 @@
                       "spec": {
                         "x": 0,
                         "y": 0,
-                        "width": 24,
-                        "height": 1,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "g-a-header"
+                          "name": "o13-up"
                         }
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 0,
-                        "y": 1,
-                        "width": 6,
-                        "height": 2,
+                        "x": 4,
+                        "y": 0,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "o1-samples-rate"
+                          "name": "o60-alerts-total"
                         }
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 6,
-                        "y": 1,
-                        "width": 6,
-                        "height": 2,
+                        "x": 8,
+                        "y": 0,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "o2-exemplars-rate"
+                          "name": "o61-alerts-firing"
                         }
                       }
                     },
@@ -5378,22 +8457,48 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 12,
-                        "y": 1,
-                        "width": 6,
-                        "height": 2,
+                        "y": 0,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "o3-scrapes-rate"
+                          "name": "o14-ready"
                         }
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 18,
-                        "y": 1,
-                        "width": 6,
-                        "height": 2,
+                        "x": 16,
+                        "y": 0,
+                        "width": 4,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "o56-targets-up"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 20,
+                        "y": 0,
+                        "width": 4,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "o57-targets-down"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 3,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o4-scrape-issues"
@@ -5403,13 +8508,65 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 0,
+                        "x": 4,
                         "y": 3,
-                        "width": 24,
-                        "height": 1,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "g-b-header"
+                          "name": "o16-wal-corruptions"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 8,
+                        "y": 3,
+                        "width": 4,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "o12-compaction-fail"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 3,
+                        "width": 4,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "o20-http-5xx"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 16,
+                        "y": 3,
+                        "width": 4,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "o1-samples-rate"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 20,
+                        "y": 3,
+                        "width": 4,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "o2-exemplars-rate"
                         }
                       }
                     },
@@ -5417,9 +8574,35 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 0,
-                        "y": 4,
-                        "width": 6,
-                        "height": 2,
+                        "y": 6,
+                        "width": 4,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "o3-scrapes-rate"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 4,
+                        "y": 6,
+                        "width": 4,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "o15-wal-size"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 8,
+                        "y": 6,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o5-head-series"
@@ -5429,10 +8612,10 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 6,
-                        "y": 4,
-                        "width": 6,
-                        "height": 2,
+                        "x": 12,
+                        "y": 6,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o6-head-chunks"
@@ -5442,10 +8625,10 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
-                        "y": 4,
-                        "width": 6,
-                        "height": 2,
+                        "x": 16,
+                        "y": 6,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o7-series-created"
@@ -5455,10 +8638,10 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 18,
-                        "y": 4,
-                        "width": 6,
-                        "height": 2,
+                        "x": 20,
+                        "y": 6,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o8-series-removed"
@@ -5469,22 +8652,9 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 0,
-                        "y": 6,
-                        "width": 24,
-                        "height": 1,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "g-c-header"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 0,
-                        "y": 7,
-                        "width": 6,
-                        "height": 2,
+                        "y": 9,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o9-storage"
@@ -5494,10 +8664,10 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 6,
-                        "y": 7,
-                        "width": 6,
-                        "height": 2,
+                        "x": 4,
+                        "y": 9,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o10-block-age"
@@ -5507,10 +8677,10 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
-                        "y": 7,
-                        "width": 6,
-                        "height": 2,
+                        "x": 8,
+                        "y": 9,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o11-compactions"
@@ -5520,101 +8690,23 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 18,
-                        "y": 7,
-                        "width": 6,
-                        "height": 2,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "o12-compaction-fail"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 0,
-                        "y": 9,
-                        "width": 24,
-                        "height": 1,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "g-d-header"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 0,
-                        "y": 10,
-                        "width": 6,
-                        "height": 2,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "o13-up"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 6,
-                        "y": 10,
-                        "width": 6,
-                        "height": 2,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "o14-ready"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
                         "x": 12,
-                        "y": 10,
-                        "width": 6,
-                        "height": 2,
+                        "y": 9,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "o15-wal-size"
+                          "name": "o58-memory"
                         }
                       }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 18,
-                        "y": 10,
-                        "width": 6,
-                        "height": 2,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "o16-wal-corruptions"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 0,
-                        "y": 12,
-                        "width": 24,
-                        "height": 1,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "g-e-header"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 0,
-                        "y": 13,
-                        "width": 6,
-                        "height": 2,
+                        "x": 16,
+                        "y": 9,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o17-queries-rate"
@@ -5624,10 +8716,10 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 6,
-                        "y": 13,
-                        "width": 6,
-                        "height": 2,
+                        "x": 20,
+                        "y": 9,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o18-query-p99"
@@ -5637,10 +8729,10 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
-                        "y": 13,
-                        "width": 6,
-                        "height": 2,
+                        "x": 0,
+                        "y": 12,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
                           "name": "o19-inflight"
@@ -5650,13 +8742,78 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 18,
-                        "y": 13,
-                        "width": 6,
-                        "height": 2,
+                        "x": 4,
+                        "y": 12,
+                        "width": 4,
+                        "height": 3,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "o20-http-5xx"
+                          "name": "o59-series-churn-s"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Health",
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "t-up"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 0,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "t-ready"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 8,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "t-wal-size"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 8,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "t-wal-corruptions"
                         }
                       }
                     }
@@ -5669,6 +8826,149 @@
             "kind": "TabsLayoutTab",
             "spec": {
               "title": "Stats",
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "st-top-scrape-duration"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 0,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "stp76-top-jobs-by-scrape-duration-avg-s"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 9,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "st-top-targets"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 9,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "st67-down-targets"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 18,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "st66-top-jobs-by-samples"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 18,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "stp77-top-jobs-by-samples"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 27,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "st68-top-jobs-by-new-series"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 27,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "st69-new-series-by-job"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 36,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "n74-slowest-jobs"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 36,
+                        "width": 12,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "n75-jobs-by-scrape-duration"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Compositions",
               "layout": {
                 "kind": "GridLayout",
                 "spec": {
@@ -5708,7 +9008,7 @@
                         "height": 9,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "st-top-scrape-duration"
+                          "name": "st-pie-codes"
                         }
                       }
                     },
@@ -5721,7 +9021,33 @@
                         "height": 9,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "st-top-targets"
+                          "name": "st-pie-appended"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Details",
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 24,
+                        "height": 18,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "st-table-scrape"
                         }
                       }
                     },
@@ -5737,17 +9063,95 @@
                           "name": "st-table-build"
                         }
                       }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Averages",
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 8,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "avg1-samples-s-avg"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 8,
+                        "y": 0,
+                        "width": 8,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "avg2-scrapes-s-avg"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 16,
+                        "y": 0,
+                        "width": 8,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "avg3-queries-s-avg"
+                        }
+                      }
                     },
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 0,
-                        "y": 24,
-                        "width": 24,
-                        "height": 18,
+                        "y": 9,
+                        "width": 8,
+                        "height": 9,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "st-table-scrape"
+                          "name": "avg4-compactions-s-avg"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 8,
+                        "y": 9,
+                        "width": 8,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "avg5-head-series-avg"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 16,
+                        "y": 9,
+                        "width": 8,
+                        "height": 9,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "avg6-wal-size-avg"
                         }
                       }
                     }
@@ -5759,7 +9163,59 @@
           {
             "kind": "TabsLayoutTab",
             "spec": {
-              "title": "Scrape & Ingest",
+              "title": "Scrape",
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "t-scrape-samples"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 0,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "t-scrape-issues"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 8,
+                        "width": 24,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "t-scrape-duration"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Ingest",
               "layout": {
                 "kind": "GridLayout",
                 "spec": {
@@ -5812,7 +9268,7 @@
                         "height": 8,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "t-scrape-issues"
+                          "name": "t-scrape-series-added"
                         }
                       }
                     }
@@ -5878,6 +9334,32 @@
                         "element": {
                           "kind": "ElementReference",
                           "name": "t-series-removed"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 16,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "f70-head-series-chunks"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 16,
+                        "width": 12,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "f71-series-churn"
                         }
                       }
                     }
@@ -5954,71 +9436,6 @@
           {
             "kind": "TabsLayoutTab",
             "spec": {
-              "title": "WAL & Health",
-              "layout": {
-                "kind": "GridLayout",
-                "spec": {
-                  "items": [
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 0,
-                        "y": 0,
-                        "width": 12,
-                        "height": 8,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "t-up"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 12,
-                        "y": 0,
-                        "width": 12,
-                        "height": 8,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "t-ready"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 0,
-                        "y": 8,
-                        "width": 12,
-                        "height": 8,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "t-wal-size"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 12,
-                        "y": 8,
-                        "width": 12,
-                        "height": 8,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "t-wal-corruptions"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "kind": "TabsLayoutTab",
-            "spec": {
               "title": "Query & API",
               "layout": {
                 "kind": "GridLayout",
@@ -6084,7 +9501,7 @@
           {
             "kind": "TabsLayoutTab",
             "spec": {
-              "title": "Scrape",
+              "title": "Jobs & Targets",
               "layout": {
                 "kind": "GridLayout",
                 "spec": {
@@ -6094,24 +9511,11 @@
                       "spec": {
                         "x": 0,
                         "y": 0,
-                        "width": 12,
+                        "width": 24,
                         "height": 8,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "t-scrape-samples"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 12,
-                        "y": 0,
-                        "width": 12,
-                        "height": 8,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "t-scrape-series-added"
+                          "name": "n72-scrape-duration-by-job"
                         }
                       }
                     },
@@ -6124,7 +9528,7 @@
                         "height": 8,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "t-scrape-duration"
+                          "name": "n73-series-scraped-by-job"
                         }
                       }
                     }
@@ -6224,7 +9628,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "Prometheus Performance",
+    "title": "Prometheus",
     "variables": []
   }
 }
