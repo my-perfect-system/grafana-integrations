@@ -84,3 +84,4 @@ pipeline: clean setup
     {{activate}} python -m src normalize
     -{{activate}} python -m src verify
     {{activate}} python -m src upload --all
+    {{activate}} python -m src upload-alerts --all

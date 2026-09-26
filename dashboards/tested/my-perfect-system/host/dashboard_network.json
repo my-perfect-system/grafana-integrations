@@ -6935,11 +6935,11 @@
         "includeVars": true,
         "keepTime": true,
         "tags": [
-          "my-perfect-system-meta-monitoring"
+          "my-perfect-system-meta"
         ],
         "targetBlank": false,
-        "title": "Meta-Monitoring",
-        "tooltip": "Meta-Monitoring dashboards",
+        "title": "Meta",
+        "tooltip": "Meta dashboards",
         "type": "dashboards",
         "url": ""
       }

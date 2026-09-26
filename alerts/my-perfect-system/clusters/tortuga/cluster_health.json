@@ -1,23 +1,25 @@
 {
-  "folder": "my-perfect-system/meta-monitoring",
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
   "orgId": 1,
-  "title": "alloy-health",
+  "title": "cluster_health",
   "interval": 60,
   "rules": [
     {
-      "uid": "alloy-target-down",
-      "title": "Alloy target down",
+      "uid": "tortuga_cluster_health_hosts_up",
+      "title": "tortuga_cluster_health_hosts_up",
       "condition": "C",
       "for": "5m",
-      "noDataState": "NoData",
+      "noDataState": "OK",
       "execErrState": "Error",
       "labels": {
         "severity": "critical",
-        "service": "alloy"
+        "category": "cluster",
+        "view": "cluster",
+        "cluster": "tortuga"
       },
       "annotations": {
-        "summary": "Alloy self target is down",
-        "description": "The Alloy self scrape target {{ $labels.instance }} has been unreachable for 5m."
+        "summary": "Host {{ $labels.mps_alloy_hostname }} is not reporting",
+        "description": "A host listed in mps_tortuga_host_expected has been down (up != 1) for 5m. Expected hosts are maintained in the mps_tortuga_host_expected recording rule (defined in the cluster_recordings group)."
       },
       "isPaused": false,
       "data": [
@@ -31,7 +33,7 @@
           "datasourceUid": "${DS_PROMETHEUS}",
           "model": {
             "editorMode": "code",
-            "expr": "min(up{job=\"integrations/self\"})",
+            "expr": "mps_tortuga_host_expected unless on(mps_alloy_hostname) (up{job=\"integrations/unix\"} == 1)",
             "instant": true,
             "range": false,
             "refId": "A",
@@ -52,9 +54,9 @@
               {
                 "evaluator": {
                   "params": [
-                    1
+                    0
                   ],
-                  "type": "lt"
+                  "type": "gt"
                 },
                 "operator": {
                   "type": "and"

@@ -1,0 +1,70 @@
+{
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
+  "orgId": 1,
+  "interval": 60,
+  "title": "cluster_recordings",
+  "rules": [
+    {
+      "uid": "tortuga_cluster_recordings_excluded",
+      "title": "tortuga_cluster_recordings_excluded",
+      "record": {
+        "metric": "mps_sensor_excluded",
+        "from": "A",
+        "target_datasource_uid": "${DS_PROMETHEUS}"
+      },
+      "for": "0s",
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "(label_replace(label_replace(vector(1), \"chip\", \"platform_nct6775_656\", \"__name__\", \".*\"), \"sensor\", \"temp6\", \"__name__\", \".*\")) or (label_replace(label_replace(vector(1), \"chip\", \"platform_nct6775_656\", \"__name__\", \".*\"), \"sensor\", \"temp14\", \"__name__\", \".*\"))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_cluster_recordings_host_expected",
+      "title": "tortuga_cluster_recordings_host_expected",
+      "record": {
+        "metric": "mps_tortuga_host_expected",
+        "from": "A",
+        "target_datasource_uid": "${DS_PROMETHEUS}"
+      },
+      "for": "0s",
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "label_replace(vector(1), \"mps_alloy_hostname\", \"hive\", \"__name__\", \".*\") or label_replace(vector(1), \"mps_alloy_hostname\", \"justaname\", \"__name__\", \".*\")",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        }
+      ]
+    }
+  ]
+}

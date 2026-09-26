@@ -3064,16 +3064,16 @@
       },
       {
         "type": "dashboards",
-        "title": "Meta-Monitoring",
+        "title": "Meta",
         "tags": [
-          "my-perfect-system-meta-monitoring"
+          "my-perfect-system-meta"
         ],
         "asDropdown": true,
         "icon": "dashboard",
         "includeVars": true,
         "keepTime": true,
         "targetBlank": false,
-        "tooltip": "Meta-Monitoring dashboards",
+        "tooltip": "Meta dashboards",
         "url": ""
       }
     ],
@@ -3085,7 +3085,7 @@
       "monitoring",
       "my-perfect-system",
       "meta-monitoring",
-      "my-perfect-system-meta-monitoring"
+      "my-perfect-system-meta"
     ],
     "timeSettings": {
       "timezone": "browser",

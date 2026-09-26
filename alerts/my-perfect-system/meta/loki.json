@@ -1,0 +1,332 @@
+{
+  "folder": "alerts/my-perfect-system/meta",
+  "orgId": 1,
+  "interval": 60,
+  "title": "loki",
+  "rules": [
+    {
+      "uid": "meta_loki_down",
+      "title": "meta_loki_down",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "loki",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Loki self target is down",
+        "description": "The Loki target {{ $labels.instance }} has been unreachable for 5m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "up{job=\"monitoring-loki\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "meta_loki_panics",
+      "title": "meta_loki_panics",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "loki",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Loki panic",
+        "description": "A Loki instance panicked in the last 30m ({{ $value }})."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 1800,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum(increase(loki_panic_total{job=\"monitoring-loki\"}[30m])) > 0",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "meta_loki_wal_disk_full",
+      "title": "meta_loki_wal_disk_full",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "loki",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Loki ingester WAL disk full",
+        "description": "Loki could not write its WAL because the disk is full in the last 30m ({{ $value }})."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 1800,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum(increase(loki_ingester_wal_disk_full_failures_total{job=\"monitoring-loki\"}[30m])) > 0",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "meta_loki_chunk_flush_failures",
+      "title": "meta_loki_chunk_flush_failures",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "service": "loki",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Loki chunk flush failures",
+        "description": "Loki failed to flush chunks in the last 30m ({{ $value }})."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 1800,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum(increase(loki_ingester_chunks_flush_failures_total{job=\"monitoring-loki\"}[30m])) > 0",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    }
+  ]
+}

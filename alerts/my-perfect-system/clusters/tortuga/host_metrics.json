@@ -1,0 +1,899 @@
+{
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
+  "orgId": 1,
+  "title": "host_metrics",
+  "interval": 60,
+  "rules": [
+    {
+      "uid": "tortuga_host_metrics_down",
+      "title": "tortuga_host_metrics_down",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Host {{ $labels.instance }} is down",
+        "description": "node-exporter on {{ $labels.instance }} has been unreachable for 5m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "up{job=\"integrations/unix\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_disk_full",
+      "title": "tortuga_host_metrics_disk_full",
+      "condition": "C",
+      "for": "30m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} will be full within 24h",
+        "description": "predict_linear over the last hour forecasts {{ $labels.mountpoint }} on {{ $labels.instance }} to run out of space within 24 hours."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 3600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "predict_linear(node_filesystem_avail_bytes{job=\"integrations/unix\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\"}[1h], 86400)",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_disk_usage",
+      "title": "tortuga_host_metrics_disk_usage",
+      "condition": "C",
+      "for": "30m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} is over 90% full",
+        "description": "Less than 10% space free on {{ $labels.mountpoint }} ({{ $labels.instance }}) for 30m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "100 * node_filesystem_avail_bytes{job=\"integrations/unix\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\"} / node_filesystem_size_bytes{job=\"integrations/unix\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    10
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_filesystem_readonly",
+      "title": "tortuga_host_metrics_filesystem_readonly",
+      "condition": "C",
+      "for": "1m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} is read-only",
+        "description": "{{ $labels.mountpoint }} on {{ $labels.instance }} switched to read-only (usually a disk/filesystem failure)."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "node_filesystem_readonly{job=\"integrations/unix\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_fs_device_error",
+      "title": "tortuga_host_metrics_fs_device_error",
+      "condition": "C",
+      "for": "1m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Device error on {{ $labels.device }} ({{ $labels.mountpoint }}) at {{ $labels.instance }}",
+        "description": "node_filesystem_device_error is 1 for {{ $labels.mountpoint }} on {{ $labels.instance }} \u2014 the device could not be stat-ed."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "node_filesystem_device_error{job=\"integrations/unix\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_inodes_low",
+      "title": "tortuga_host_metrics_inodes_low",
+      "condition": "C",
+      "for": "30m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} has under 10% free inodes",
+        "description": "Less than 10% of inodes free on {{ $labels.mountpoint }} ({{ $labels.instance }}) for 30m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "100 * node_filesystem_files_free{job=\"integrations/unix\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\"} / node_filesystem_files{job=\"integrations/unix\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    10
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_swapping",
+      "title": "tortuga_host_metrics_swapping",
+      "condition": "C",
+      "for": "15m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Host {{ $labels.instance }} is swapping",
+        "description": "Sustained swap in/out activity on {{ $labels.instance }} for 15m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "rate(node_vmstat_pswpin{job=\"integrations/unix\"}[5m]) + rate(node_vmstat_pswpout{job=\"integrations/unix\"}[5m])",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0.5
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_oom_kill",
+      "title": "tortuga_host_metrics_oom_kill",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "OOM kill on {{ $labels.instance }} within the last hour",
+        "description": "The kernel OOM killer ran on {{ $labels.instance }} in the last 60 minutes."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 3600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "increase(node_vmstat_oom_kill{job=\"integrations/unix\"}[1h])",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_systemd_unit_failed",
+      "title": "tortuga_host_metrics_systemd_unit_failed",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Unit {{ $labels.name }} failed on {{ $labels.instance }}",
+        "description": "Systemd unit {{ $labels.name }} is in state 'failed' on {{ $labels.instance }} for 5m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "node_systemd_unit_state{job=\"integrations/unix\",state=\"failed\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_temp_critical",
+      "title": "tortuga_host_metrics_temp_critical",
+      "condition": "C",
+      "for": "1m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Sensor {{ $labels.chip }}/{{ $labels.sensor }} on {{ $labels.instance }} critical",
+        "description": "Hardware sensor {{ $labels.chip }} {{ $labels.sensor }} reports node_hwmon_temp_alarm = 1 on {{ $labels.instance }}. Known false-positive sensors are excluded via the recording rule mps_sensor_excluded (defined in the recordings group)."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "(node_hwmon_temp_alarm{job=\"integrations/unix\"} > 0) unless on(chip, sensor) mps_sensor_excluded",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_metrics_fan_alarm",
+      "title": "tortuga_host_metrics_fan_alarm",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "host",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Fan {{ $labels.chip }}/{{ $labels.sensor }} alarm on {{ $labels.instance }}",
+        "description": "Hardware fan {{ $labels.chip }} {{ $labels.sensor }} reports node_hwmon_fan_alarm = 1 on {{ $labels.instance }}."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "node_hwmon_fan_alarm{job=\"integrations/unix\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    }
+  ]
+}

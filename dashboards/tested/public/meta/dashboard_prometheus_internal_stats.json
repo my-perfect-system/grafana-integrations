@@ -91,11 +91,11 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "public-meta-monitoring"
+        "public-meta"
       ],
       "targetBlank": false,
-      "title": "Meta-Monitoring",
-      "tooltip": "Meta-Monitoring dashboards",
+      "title": "Meta",
+      "tooltip": "Meta dashboards",
       "type": "dashboards",
       "url": ""
     }
@@ -5766,7 +5766,7 @@
     "prometheus",
     "internal",
     "public",
-    "public-meta-monitoring"
+    "public-meta"
   ],
   "templating": {
     "list": [

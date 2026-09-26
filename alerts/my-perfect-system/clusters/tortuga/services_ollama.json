@@ -1,19 +1,20 @@
 {
-  "folder": "my-perfect-system/meta-monitoring",
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
   "orgId": 1,
-  "title": "ollama-health",
+  "title": "services_ollama",
   "interval": 60,
   "rules": [
     {
-      "uid": "ollama-health",
-      "title": "Ollama Health Check",
+      "uid": "tortuga_services_ollama_health",
+      "title": "tortuga_services_ollama_health",
       "condition": "C",
       "for": "5m",
       "noDataState": "NoData",
       "execErrState": "Error",
       "labels": {
         "severity": "critical",
-        "service": "ollama"
+        "service": "ollama",
+        "view": "service"
       },
       "annotations": {
         "summary": "Ollama exporter target is down",

@@ -1,0 +1,656 @@
+{
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
+  "orgId": 1,
+  "interval": 60,
+  "title": "host_meta",
+  "rules": [
+    {
+      "uid": "tortuga_host_meta_target_down",
+      "title": "tortuga_host_meta_target_down",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "alloy",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Alloy self target is down",
+        "description": "The Alloy self scrape target {{ $labels.instance }} has been unreachable for 5m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "up{job=\"integrations/self\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_meta_config_load_failed",
+      "title": "tortuga_host_meta_config_load_failed",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "alloy",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Alloy config load failed on {{ $labels.instance }}",
+        "description": "The last Alloy configuration load failed on {{ $labels.instance }} \u2014 Alloy keeps running the previous config. Fix and reload the Alloy config."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "alloy_config_last_load_successful{job=\"integrations/self\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_meta_component_unhealthy",
+      "title": "tortuga_host_meta_component_unhealthy",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "service": "alloy",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Alloy components unhealthy on {{ $labels.instance }}",
+        "description": "{{ $value }} Alloy component(s) are unhealthy or unknown on {{ $labels.instance }} \u2014 part of the telemetry pipeline may be stalled."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (instance) (alloy_component_controller_running_components{job=\"integrations/self\",health_type=~\"unhealthy|unknown\"})",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_meta_remote_write_failed",
+      "title": "tortuga_host_meta_remote_write_failed",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "alloy",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Alloy remote write failed on {{ $labels.instance }}",
+        "description": "Alloy on {{ $labels.instance }} permanently failed to send {{ $value }} samples to {{ $labels.url }} in the last 15m \u2014 metrics were lost."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 900,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "increase(prometheus_remote_storage_samples_failed_total{job=\"integrations/self\"}[15m])",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_meta_remote_write_lag",
+      "title": "tortuga_host_meta_remote_write_lag",
+      "condition": "C",
+      "for": "10m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "service": "alloy",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Alloy remote write lagging on {{ $labels.instance }}",
+        "description": "Alloy's remote write on {{ $labels.instance }} is {{ $value }}s behind \u2014 samples are queued but not being sent. Check the remote endpoint and network."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "prometheus_remote_storage_highest_timestamp_in_seconds{job=\"integrations/self\"} - on(instance) prometheus_remote_storage_queue_highest_sent_timestamp_seconds{job=\"integrations/self\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    120
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_meta_wal_corruption",
+      "title": "tortuga_host_meta_wal_corruption",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "alloy",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Alloy remote write WAL corruption on {{ $labels.instance }}",
+        "description": "Alloy's remote-write WAL on {{ $labels.instance }} reported a corruption \u2014 queued samples may be lost on restart."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "prometheus_remote_write_wal_corruptions_total{job=\"integrations/self\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_meta_restarted",
+      "title": "tortuga_host_meta_restarted",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "service": "alloy",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Alloy restarted on {{ $labels.instance }}",
+        "description": "Alloy on {{ $labels.instance }} (re)started less than 10 minutes ago \u2014 watch for crash loops."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "time() - alloy_resources_process_start_time_seconds{job=\"integrations/self\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    600
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_meta_memory_high",
+      "title": "tortuga_host_meta_memory_high",
+      "condition": "C",
+      "for": "15m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "service": "alloy",
+        "view": "meta"
+      },
+      "annotations": {
+        "summary": "Alloy memory high on {{ $labels.instance }}",
+        "description": "Alloy on {{ $labels.instance }} is using more than 2 GiB resident memory for 15m \u2014 possible leak or backlog growth."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "alloy_resources_process_resident_memory_bytes{job=\"integrations/self\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    2147483648
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    }
+  ]
+}

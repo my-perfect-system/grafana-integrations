@@ -2,3 +2,4 @@ data/.env
 data/state/
 dashboards/normalized
 .venv/
+.opencode/

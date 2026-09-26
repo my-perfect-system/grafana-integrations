@@ -1,0 +1,413 @@
+{
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
+  "orgId": 1,
+  "title": "services_sms",
+  "interval": 60,
+  "rules": [
+    {
+      "uid": "tortuga_services_sms_down",
+      "title": "tortuga_services_sms_down",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "sms",
+        "view": "service"
+      },
+      "annotations": {
+        "summary": "SMS exporter is down on {{ $labels.mps_alloy_hostname }}",
+        "description": "The SMS exporter scrape target on {{ $labels.mps_alloy_hostname }} ({{ $labels.instance }}) has been unreachable for 5m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "up{job=\"sms\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_services_sms_openvpn_server_down",
+      "title": "tortuga_services_sms_openvpn_server_down",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "NoData",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "service": "openvpn",
+        "view": "service"
+      },
+      "annotations": {
+        "summary": "OpenVPN server is down on {{ $labels.mps_alloy_hostname }}",
+        "description": "The OpenVPN server on {{ $labels.mps_alloy_hostname }} has been unreachable (sms_openvpn_up == 0) for 5m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sms_openvpn_up{type=\"server\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_services_sms_openvpn_client_down",
+      "title": "tortuga_services_sms_openvpn_client_down",
+      "condition": "C",
+      "for": "5m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "service": "openvpn",
+        "view": "service"
+      },
+      "annotations": {
+        "summary": "OpenVPN client {{ $labels.common_name }} is down",
+        "description": "The OpenVPN client {{ $labels.common_name }} on {{ $labels.mps_alloy_hostname }} has been unreachable (sms_openvpn_up == 0) for 5m."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sms_openvpn_up{type=\"client\"}",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_services_sms_reboot_required",
+      "title": "tortuga_services_sms_reboot_required",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "service": "sms",
+        "view": "service"
+      },
+      "annotations": {
+        "summary": "Host {{ $labels.mps_alloy_hostname }} requires a reboot",
+        "description": "The OS on {{ $labels.mps_alloy_hostname }} has pending updates or configuration that require a reboot (sms_builtin_os_reboot_required == 1)."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sms_builtin_os_reboot_required",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_services_sms_packages_upgradable",
+      "title": "tortuga_services_sms_packages_upgradable",
+      "condition": "C",
+      "for": "30m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "service": "sms",
+        "view": "service"
+      },
+      "annotations": {
+        "summary": "{{ $value }} upgradable packages on {{ $labels.mps_alloy_hostname }}",
+        "description": "{{ $value }} OS packages are upgradable on {{ $labels.mps_alloy_hostname }} (sms_builtin_os_packages_upgradable)."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_PROMETHEUS}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sms_builtin_os_packages_upgradable",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    50
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,656 @@
+{
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
+  "orgId": 1,
+  "title": "host_logs",
+  "interval": 60,
+  "rules": [
+    {
+      "uid": "tortuga_host_logs_root_login",
+      "title": "tortuga_host_logs_root_login",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "logs",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Root login on {{ $labels.mps_alloy_hostname }}",
+        "description": "A direct root SSH login (Accepted ... for root) occurred on {{ $labels.mps_alloy_hostname }} in the last 10 minutes."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_LOKI}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (mps_alloy_hostname) (count_over_time({job=\"syslog-auth.log\"} |= \"sshd\" |~ \"Accepted .+ for root from \" [10m]))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_logs_sudo_invalid_password",
+      "title": "tortuga_host_logs_sudo_invalid_password",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "logs",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Sudo invalid password attempt on {{ $labels.mps_alloy_hostname }}",
+        "description": "One or more 'sudo: ... incorrect password attempts' lines in syslog-auth.log on {{ $labels.mps_alloy_hostname }} in the last 10 minutes."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_LOKI}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (mps_alloy_hostname) (count_over_time({job=\"syslog-auth.log\"} |= \"sudo\" |= \"incorrect password attempts\" [10m]))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_logs_ssh_failed_login",
+      "title": "tortuga_host_logs_ssh_failed_login",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "logs",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "SSH brute force on {{ $labels.mps_alloy_hostname }}",
+        "description": "{{ $value }} failed SSH password attempts on {{ $labels.mps_alloy_hostname }} in the last 10 minutes \u2014 possible brute force."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_LOKI}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (mps_alloy_hostname) (count_over_time({job=\"syslog-auth.log\"} |= \"sshd\" |= \"Failed password\" [10m]))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    75
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_logs_sudo_not_allowed",
+      "title": "tortuga_host_logs_sudo_not_allowed",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "logs",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Sudo command not allowed on {{ $labels.mps_alloy_hostname }}",
+        "description": "A sudo command was blocked (command not allowed) on {{ $labels.mps_alloy_hostname }} in the last 10 minutes."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_LOKI}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (mps_alloy_hostname) (count_over_time({job=\"syslog-auth.log\"} |= \"sudo\" |= \"command not allowed\" [10m]))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_logs_fail2ban_ban",
+      "title": "tortuga_host_logs_fail2ban_ban",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "logs",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "fail2ban ban on {{ $labels.mps_alloy_hostname }}",
+        "description": "fail2ban banned source IP(s) on {{ $labels.mps_alloy_hostname }} in the last 10 minutes ({{ $value }} ban event(s)) \u2014 possible attack in progress."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_LOKI}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (mps_alloy_hostname) (count_over_time({job=\"fail2ban\"} |~ \"] Ban \" [10m]))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    100
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_logs_kernel_panic",
+      "title": "tortuga_host_logs_kernel_panic",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "critical",
+        "category": "logs",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Kernel panic/oops on {{ $labels.mps_alloy_hostname }}",
+        "description": "The kernel logged a panic/oops on {{ $labels.mps_alloy_hostname }} in the last 10 minutes ({{ $value }})."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_LOKI}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (mps_alloy_hostname) (count_over_time({job=\"syslog-kern.log\"} |~ \"(?i)panic|oops\" [10m]))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_logs_cron_failed",
+      "title": "tortuga_host_logs_cron_failed",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "logs",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Cron job failure on {{ $labels.mps_alloy_hostname }}",
+        "description": "Cron logged errors/failures on {{ $labels.mps_alloy_hostname }} in the last 10 minutes ({{ $value }})."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_LOKI}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (mps_alloy_hostname) (count_over_time({job=\"syslog-cron.log\"} |~ \"(?i)error|failed\" [10m]))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    },
+    {
+      "uid": "tortuga_host_logs_docker_error",
+      "title": "tortuga_host_logs_docker_error",
+      "condition": "C",
+      "for": "0m",
+      "noDataState": "OK",
+      "execErrState": "Error",
+      "labels": {
+        "severity": "warning",
+        "category": "logs",
+        "view": "host"
+      },
+      "annotations": {
+        "summary": "Docker daemon error on {{ $labels.mps_alloy_hostname }}",
+        "description": "The Docker daemon logged error-level messages on {{ $labels.mps_alloy_hostname }} in the last 10 minutes ({{ $value }})."
+      },
+      "isPaused": false,
+      "data": [
+        {
+          "refId": "A",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 600,
+            "to": 0
+          },
+          "datasourceUid": "${DS_LOKI}",
+          "model": {
+            "editorMode": "code",
+            "expr": "sum by (mps_alloy_hostname) (count_over_time({job=\"docker\"} |= \"level=error\" [10m]))",
+            "instant": true,
+            "range": false,
+            "refId": "A",
+            "intervalMs": 1000,
+            "maxDataPoints": 43200
+          }
+        },
+        {
+          "refId": "C",
+          "queryType": "",
+          "relativeTimeRange": {
+            "from": 0,
+            "to": 0
+          },
+          "datasourceUid": "__expr__",
+          "model": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    250
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "datasource": {
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "hide": false,
+            "intervalMs": 1000,
+            "maxDataPoints": 43200,
+            "refId": "C",
+            "type": "classic_conditions"
+          }
+        }
+      ]
+    }
+  ]
+}

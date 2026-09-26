@@ -43,7 +43,15 @@ from commands import (  # noqa: E402
     verify,
 )
 
-_COMMANDS = (discover, metrics, normalize, verify, upload, upload_alerts, check)
+_COMMANDS = (
+    discover,
+    metrics,
+    normalize,
+    verify,
+    upload,
+    upload_alerts,
+    check,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:

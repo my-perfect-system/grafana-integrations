@@ -6760,13 +6760,13 @@
         "keepTime": true
       },
       {
-        "title": "Meta-Monitoring",
+        "title": "Meta",
         "type": "dashboards",
         "icon": "dashboard",
-        "tooltip": "Meta-Monitoring dashboards",
+        "tooltip": "Meta dashboards",
         "url": "",
         "tags": [
-          "my-perfect-system-meta-monitoring"
+          "my-perfect-system-meta"
         ],
         "asDropdown": true,
         "targetBlank": false,

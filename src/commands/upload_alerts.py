@@ -10,7 +10,7 @@ Format
 ``alerts/<group>/<group>.json``::
 
     {
-      "folder": "my-perfect-system/meta-monitoring",
+      "folder": "alerts/my-perfect-system/meta",
       "orgId": 1,
       "title": "alloy-health",
       "interval": 60,
@@ -76,7 +76,9 @@ def _resolve_datasource_aliases(
 ) -> None:
     if isinstance(obj, dict):
         for key, value in obj.items():
-            if key == "datasourceUid" and isinstance(value, str):
+            if key in ("datasourceUid", "target_datasource_uid") and isinstance(
+                value, str
+            ):
                 if value in alias_map and alias_map[value] in type_to_uid:
                     obj[key] = type_to_uid[alias_map[value]]
             else:
@@ -152,7 +154,10 @@ def main(args) -> int:
         if folder and not doc.get("folderUid"):
             folder_paths.add(folder)
         parsed.append((folder, path, doc))
-    folder_paths |= dashboard_upload._local_folder_paths(Path(args.source))
+    source_dir = Path(args.source)
+    local_paths = dashboard_upload._local_folder_paths(source_dir)
+    folder_paths |= {f"{source_dir.name}/{p}" for p in local_paths}
+    folder_paths.add(source_dir.name)
 
     folder_map, created_folders = dashboard_upload.ensure_folders(
         client, folder_paths, args.dry_run
@@ -186,12 +191,13 @@ def main(args) -> int:
 
         unresolved = sorted(
             {
-                q["datasourceUid"]
+                q[k]
                 for r in rule_list
-                for q in (r.get("data") or [])
-                if isinstance(q.get("datasourceUid"), str)
-                and q["datasourceUid"] in alias_map
-                and alias_map[q["datasourceUid"]] not in type_to_uid
+                for q in (r.get("data") or []) + [r.get("record") or {}]
+                for k in ("datasourceUid", "target_datasource_uid")
+                if isinstance(q.get(k), str)
+                and q[k] in alias_map
+                and alias_map[q[k]] not in type_to_uid
             }
         )
         if unresolved:

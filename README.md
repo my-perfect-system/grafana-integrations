@@ -76,9 +76,9 @@ run `just discover` (and `just metrics`) again before the next upload.
 ```
 dashboards/tested/
   my-perfect-system/       # our curated dashboards (full standard)
-    cluster/  hardware/  host/  logs/  meta-monitoring/
+    cluster/  hardware/  host/  logs/  meta/
   public/                  # third-party/imported dashboards (minimal changes)
-    blackbox/  docker/  host/  meta-monitoring/  sms/
+    blackbox/  docker/  host/  meta/  sms/
 ```
 
 Directories are categories. On upload, the path relative to
@@ -92,9 +92,32 @@ to clean up.
 ```
 alerts/
   my-perfect-system/
-    meta-monitoring/
-      alloy-health.json
+    clusters/
+      tortuga/
+        cluster_health.json
+        host_meta.json
+        cluster_recordings.json
+        services_ollama.json
+        services_sms.json
+        services_blackbox.json
+        services_docker.json
+        host_logs.json
+        host_metrics.json
+    meta/
+      prometheus.json
+      loki.json
+      grafana.json
 ```
+
+Alert rules are consolidated into rule groups. Their Grafana folders live
+under a dedicated `alerts/` root (so alert folders never show up as empty
+folders in the dashboard view): `alerts/my-perfect-system/clusters/<cluster>`
+holds the cluster's rule groups — `cluster_health`, `host_meta`,
+`cluster_recordings`, the service-liveness groups `services_ollama`, `services_sms`,
+`services_blackbox` and `services_docker`, and the per-host groups `host_metrics` and
+`host_logs` — all directly at the cluster level; `alerts/my-perfect-system/meta`
+(monitoring-stack self-checks, one group per backend service) is a sibling. See
+[`alerts/README.md`](alerts/README.md).
 
 Each JSON file is **one alert rule group** (Grafana Alerting provisioning
 format) with a `folder` path, `title`, `interval` and `rules`. Uploads are

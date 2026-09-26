@@ -1,4 +1,5 @@
 {
+  "uid": "5c22ebaf-19ae-5bb4-b47c-f561b9de43fd",
   "__inputs": [
     {
       "name": "DS_PROMETHEUS",
@@ -61,11 +62,11 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "public-meta-monitoring"
+        "public-meta"
       ],
       "targetBlank": false,
-      "title": "Meta-Monitoring",
-      "tooltip": "Meta-Monitoring dashboards",
+      "title": "Meta",
+      "tooltip": "Meta dashboards",
       "type": "dashboards",
       "url": ""
     }
@@ -1630,7 +1631,7 @@
   "tags": [
     "grafana",
     "public",
-    "public-meta-monitoring"
+    "public-meta"
   ],
   "templating": {
     "list": [

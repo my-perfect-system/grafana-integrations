@@ -36,40 +36,169 @@ nested folder structure, so the `pipeline`/`upload` flow mirrors it too.
 
 ## Alerts (`alerts/`)
 
-`alerts/` is the source of truth for Grafana-managed alert rules, mirroring the
-Grafana folder tree like `dashboards/tested/`. **One JSON file = one rule
-group** in the Grafana Alerting provisioning format:
+`alerts/` is the source of truth for Grafana-managed alert rules. **One JSON
+file = one rule group** in the Grafana Alerting provisioning format. Alert
+rules are consolidated into **rule groups** under the `alerts/` Grafana root
+(kept separate from dashboard folders so alert folders don't appear as empty
+dashboard folders): `alerts/my-perfect-system/clusters/<cluster>` for cluster-
+scoped groups (all cluster-level groups — `cluster_health`,
+`host_meta`, `cluster_recordings`, `services_ollama`, `services_sms`, `services_blackbox`, `services_docker`, `host_logs`, `host_metrics` — sit directly at
+the cluster level), plus `alerts/my-perfect-system/meta` (one group per
+monitoring backend service).
+A rule's
+`uid`/`title` reflects its path:
+`<clustername>_<rulegroup>_<feature>` (e.g. `tortuga_host_metrics_down`).
+
+```
+alerts/
+  my-perfect-system/
+    clusters/
+      tortuga/
+        cluster_health.json     # group "cluster_health"     (view: cluster)
+        host_meta.json          # group "host_meta"          (view: meta, alloy)
+        cluster_recordings.json # group "cluster_recordings" (recording rules)
+        services_ollama.json  # group "services_ollama"  (view: service)
+        services_sms.json  # group "services_sms"  (view: service)
+        services_blackbox.json  # group "services_blackbox"  (view: service)
+        services_docker.json  # group "services_docker"  (view: service)
+        host_logs.json      # group "host_logs"    (view: host, Loki)
+        host_metrics.json   # group "host_metrics" (view: host)
+    meta/
+      prometheus.json     # group "prometheus" (view: meta)
+      loki.json           # group "loki"       (view: meta)
+      grafana.json        # group "grafana"    (view: meta)
+```
+
+| File | Group | `view` | Covers |
+|---|---|---|---|
+| `clusters/tortuga/cluster_health.json` | `cluster_health` | `cluster` | cluster `tortuga` liveness: `cluster not reporting` alert |
+| `clusters/tortuga/host_meta.json` | `host_meta` | `meta` | monitoring exporter self-scrape (alloy) |
+| `clusters/tortuga/cluster_recordings.json` | `cluster_recordings` | — | the cluster's recording rules (`mps_sensor_excluded`, `mps_tortuga_host_expected`) |
+| `clusters/tortuga/services_ollama.json` | `services_ollama` | `service` | service liveness (ollama) |
+| `clusters/tortuga/services_sms.json` | `services_sms` | `service` | SMS exporter self-checks + service liveness (openvpn server/client, reboot, packages) |
+| `clusters/tortuga/services_blackbox.json` | `services_blackbox` | `service` | blackbox probe down + TLS cert expiry (invalid, 3d, 7d) |
+| `clusters/tortuga/services_docker.json` | `services_docker` | `service` | Docker/cAdvisor down + container OOM kill + restart loop |
+| `clusters/tortuga/host_metrics.json` | `host_metrics` | `host` | per-host health (down, disk, inodes, swap, OOM, systemd, temp, fan) |
+| `clusters/tortuga/host_logs.json` | `host_logs` | `host` | Loki log events (root SSH login, sudo misuse, SSH brute force, fail2ban bans, kernel panic/oops, cron failures, docker errors) |
+| `meta/prometheus.json` | `prometheus` | `meta` | prometheus self-checks (down, TSDB compaction/WAL failures) |
+| `meta/loki.json` | `loki` | `meta` | loki self-checks (down, panics, WAL disk-full, flush failures) |
+| `meta/grafana.json` | `grafana` | `meta` | grafana self-checks (down, invalid alerts, notification write failures) |
+
+### Labels
+
+Every rule carries a `view` label for filtering in the Alerting UI:
+
+| `view` | meaning |
+|---|---|
+| `host` | per-host state (`host_metrics`, `host_logs`) |
+| `cluster` | cluster-wide state (`cluster_health`) |
+| `service` | service liveness (`services_ollama`, `services_sms`, `services_blackbox`, `services_docker`) |
+| `meta` | monitoring-stack self-checks (`host_meta`, `prometheus`, `loki`, `grafana`) |
+
+Cluster-scoped rules also carry a `cluster` label (value = cluster name, e.g.
+`tortuga`); service-liveness rules carry `service`; every rule carries
+`severity` (`critical` / `warning`).
+
+### Recording rules
+
+Static metadata lives as recording rules (metric prefix `mps_`), consolidated
+in the cluster's `cluster_recordings` group rather than inline in queries:
+
+| Metric | Labels | Group | Meaning |
+|---|---|---|---|
+| `mps_sensor_excluded` | `chip`, `sensor` | `cluster_recordings` | known false-positive hardware sensors |
+| `mps_tortuga_host_expected` | `mps_alloy_hostname` | `cluster_recordings` | expected hosts for cluster `tortuga` |
+
+Recording rules use a `record` block instead of `condition` and write into
+Prometheus via `record.target_datasource_uid: "${DS_PROMETHEUS}"`. To change a
+list (exceptions, expected hosts) edit the `cluster_recordings` group file and
+re-upload — never inline the list in queries.
+
+### noDataState
+
+Down-detection rules (`up == 0`) use `"noDataState": "NoData"`. Rules whose
+absence is normal — counter/threshold checks, sensor alarms — use
+`"noDataState": "OK"` (the `*-down` rule covers the service/host-out case).
+
+### Notification routing
+
+Routing lives in Grafana's **notification policies**, not in these files. We keep
+it simple: one policy whose routes match both integrations (email and Telegram),
+so every firing alert goes to both contact points immediately. There is **no
+time-based escalation** (`for`/`after`/"still firing after N hours") in Grafana
+policies — the routing tree only matches on **labels** and **mute timings**;
+`group_wait`/`group_interval`/`repeat_interval` re-notify the *same* receiver,
+they never switch receivers after a delay. Do not try to express "email now,
+Telegram in 3 days" in routing; if that split is ever wanted it must be done at
+rule level (twin rules with a longer `for` + a routing label).
+
+### Format
 
 ```json
 {
-  "folder": "my-perfect-system/meta-monitoring",
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
   "orgId": 1,
-  "title": "alloy-health",
+  "title": "cluster_health",
   "interval": 60,
   "rules": [
     {
-      "uid": "alloy-target-down",
-      "title": "Alloy target down",
+      "uid": "tortuga_cluster_health_hosts_up",
+      "title": "tortuga_cluster_health_hosts_up",
       "condition": "C",
       "for": "5m",
-      "noDataState": "NoData",
+      "noDataState": "OK",
       "execErrState": "Error",
-      "data": [ ]
+      "labels": { "severity": "critical", "cluster": "tortuga", "view": "cluster" },
+      "annotations": { "summary": "…", "description": "…" },
+      "data": [ { "refId": "A", "…": "query" }, { "refId": "C", "…": "classic_conditions" } ]
     }
   ]
 }
 ```
 
-- `folder` is a Grafana folder **path** (created/mirrored like dashboard
-  folders); use `folderUid` to target a folder directly.
-- `data[].datasourceUid` uses aliases (`${DS_PROMETHEUS}`, `${DS_LOKI}`),
-  resolved from `data/state/datasources.json`; `__expr__` is left untouched.
+Recording rules live in their own `cluster_recordings` group, one per cluster:
+
+```json
+{
+  "folder": "alerts/my-perfect-system/clusters/tortuga",
+  "orgId": 1,
+  "title": "cluster_recordings",
+  "interval": 60,
+  "rules": [
+    {
+      "uid": "tortuga_cluster_recordings_host_expected",
+      "title": "tortuga_cluster_recordings_host_expected",
+      "record": { "metric": "mps_tortuga_host_expected", "from": "A", "target_datasource_uid": "${DS_PROMETHEUS}" },
+      "for": "0s",
+      "isPaused": false,
+      "data": [ { "refId": "A", "…": "query" } ]
+    }
+  ]
+}
+```
+
+- `folder` is a Grafana folder **path** under the `alerts/` root (created/mirrored
+  like dashboard folders, but kept under `alerts/` so alert folders are separate
+  from dashboard folders); use `folderUid` to target a folder directly. All
+  groups live under `alerts/my-perfect-system/`: a cluster's groups directly in
+  `"folder": "alerts/my-perfect-system/clusters/<cluster>"` (e.g.
+  `clusters/tortuga`, with groups `cluster_health`, `host_meta`, `cluster_recordings`, `services_ollama`,
+  `services_sms`, `services_blackbox`, `services_docker`, `host_logs`, `host_metrics`), or `"folder": "alerts/my-perfect-system/meta"` for the
+  backend self-checks. Rule uids/titles encode the path as
+  `<clustername>_<rulegroup>_<feature>` (e.g.
+  `tortuga_cluster_health_hosts_up`, `tortuga_host_meta_target_down`,
+  `tortuga_host_metrics_down`), and metrics carry the `mps_` prefix
+  (`mps_tortuga_host_expected`, …).
+- `data[].datasourceUid` and `record.target_datasource_uid` use aliases
+  (`${DS_PROMETHEUS}`, `${DS_LOKI}`), resolved from
+  `data/state/datasources.json`; `__expr__` is left untouched.
 - Upload with `just upload-alerts` (`src/commands/upload_alerts.py`). It is
   idempotent: each group is upserted via
   `PUT /api/v1/provisioning/folder/{folderUid}/rule-groups/{group}`, so the
-  local file is the source of truth for that group. Uploads send
-  `X-Disable-Provenance: true` so rules stay editable in the Grafana UI
-  (provenance is not set).
+  local file is the source of truth for that group. Rules move by `uid`, so
+  renaming/relocating a group is just a file edit + re-upload (no manual
+  deletion needed). Uploads send `X-Disable-Provenance: true` so rules stay
+  editable in the Grafana UI (provenance is not set).
 
 ## Dashboard storage layout (tested/)
 
@@ -82,18 +211,19 @@ dashboards/tested/
     cluster/               # 1
     host/                  # 6  (tabbed: CPU, Disks, HwMon, Memory, Network, System)
     logs/                  # 8
-    meta-monitoring/       # 3
+    meta/                  # 8
+    services/              # 3  (tabbed v2: Ollama Metrics, Llama.cpp Metrics, GPU (AMD))
   public/                  # third-party / imported dashboards (minimal changes)
     blackbox/              # 1
     docker/                # 6
     host/                  # 3
-    meta-monitoring/       # 5
+    meta/                  # 5
     sms/                   # 5
 ```
 
 Categories are directories (e.g. `host`, `sms`). The **category slug** is the
 relative folder path with `/` replaced by `-`: `my-perfect-system-host`,
-`public-meta-monitoring`, etc.
+`public-meta`, etc.
 
 ---
 
@@ -131,11 +261,23 @@ tags".
     row).
   - `Statistics` tab: `Overview` → `Composition` → `Rankings` → `Inventory`.
 - `logs`: `Overview` → `Timeline` → `Top lists` → `Details` → `Raw logs`
-- `meta-monitoring`: `Overview` → `Timeline` → `Top lists` →
+- `meta`: `Overview` → `Timeline` → `Top lists` →
   `Content & users` → `Alerts & policies` → `Details`
 - `cluster` (v2): tabs `Metrics` / `Logs` / `Monitoring`, each with
   `Overview` / `Timeline` / `Details` (+ domain rows such as
   `Prometheus` / `Loki` / `Grafana` in the Monitoring tab).
+- `services` (v2, tabbed): service-specific tabs, flat — no row
+  sub-categories (create separate tabs instead), with series panels
+  arranged two per line (`w=12`, 2x2-style grids; a lone panel takes the
+  full width). `GPU (AMD)`
+  uses tabs `Overview` (stats only: 16 instant + 8 24h stats) / `Utilization`
+  (utilization series + 1h-average trend + GFX/memory clocks) /
+  `Power & temperatures` / `Media` / `Memory & PCIe` / `Health` / `Stats`
+  (current-composition piecharts, 24h time-share bargauges + per-GPU
+  inventory table). Its stat
+  panels copy the Ollama style (`colorMode: value` + percent change with
+  semantic red/orange/green thresholds; only the up stat is
+  `background_solid` red/green) instead of the themed base colours.
 - Do **not** add a markdown/text "nav" panel. Navigation is done with native
   Grafana dashboard links (below).
 
@@ -150,7 +292,10 @@ tags".
   query variable.
 - `logs` family also has `search` (label `Search`); `sudo` adds an `ansible`
   custom variable.
-- `meta-monitoring` currently has no variables (service-scoped dashboards).
+- `meta` currently has no variables (service-scoped dashboards).
+- `services` dashboards scope by their own dimension: `GPU (AMD)` has
+  `hostname` + `gpu` (per-GPU filter, same shape as `hostname`);
+  `Ollama Metrics` has `model`.
 - `host` resource dashboards add one filter variable per crowded
   label dimension (see §8), same shape as `hostname`: `query` type,
   `multi: true`, `includeAll: true`, default `All`, `sort: 1`, `refresh: 2`.
@@ -164,7 +309,7 @@ tags".
 
 - Common tag on every dashboard we own: `my-perfect-system`.
 - Per-folder category tag: `my-perfect-system-<category>` where `<category>` is
-  the folder name (`cluster`, `host`, `logs`, `meta-monitoring`).
+  the folder name (`cluster`, `host`, `logs`, `meta`, `services`).
 - Keep the descriptive tags that already exist (e.g. `cpu`, `node-exporter`,
   `loki`) — they are harmless.
 
@@ -194,7 +339,7 @@ Required links on **every** `my-perfect-system` dashboard, in order:
 | `My Perfect System` | `my-perfect-system` |
 | `Host` | `my-perfect-system-host` |
 | `Logs` | `my-perfect-system-logs` |
-| `Meta-Monitoring` | `my-perfect-system-meta-monitoring` |
+| `Meta` | `my-perfect-system-meta` |
 
 Do not add cross-category links between `cluster` and the others beyond the
 above set. No self-referential link to `cluster`.
@@ -204,8 +349,13 @@ above set. No self-referential link to `cluster`.
 Resource dashboards are titled `CPU`, `Disks`, `HwMon`, `Memory`, `Network`,
 `System` (all under `host/`); their tabs are always `Summary`,
 `Series`, `Statistics` (see §8). Other titles: `Cluster Summary`, the
-`<Topic> Log Analysis` log dashboards, and the `<Service> Metrics`
-meta-monitoring dashboards.
+`<Topic> Log Analysis` log dashboards, the `<Service> Metrics` service
+dashboards plus `GPU (AMD)` (`my-perfect-system/services/`), and the
+cross-service `Alerts` dashboard
+(`my-perfect-system/meta/`, rows `Overview` → `Timeline` → `Groups` →
+`Alert rules`; its centerpiece is the native **Alert list** panel — the
+`datasource` plugin has no alert query type in Grafana 13, so per-rule alert
+tables must use `alertlist`, which needs no datasource reference).
 
 ### 8. Resource dashboards (tabbed — Summary / Series / Statistics)
 
@@ -391,7 +541,7 @@ These are imported/downloaded dashboards. We only add navigation metadata; we do
 - Do **not** change their theme, rows, panels, queries, variables, time or
   refresh.
 - Add the `public` tag (already present) plus one category tag
-  `public-<category>` (`blackbox`, `docker`, `host`, `meta-monitoring`, `sms`).
+  `public-<category>` (`blackbox`, `docker`, `host`, `meta`, `sms`).
 - Add exactly one native dashboard link: their own category
   (e.g. SMS dashboard → `SMS` link with tag `public-sms`).
 - Do **not** add a `My Perfect System` link and do **not** add the
