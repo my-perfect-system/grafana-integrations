@@ -41,10 +41,10 @@ file = one rule group** in the Grafana Alerting provisioning format. Alert
 rules are consolidated into **rule groups** under the `alerts/` Grafana root
 (kept separate from dashboard folders so alert folders don't appear as empty
 dashboard folders): `alerts/my-perfect-system/clusters/<cluster>` for cluster-
-scoped groups (all cluster-level groups — `cluster_health`,
-`host_meta`, `cluster_recordings`, `services_ollama`, `services_sms`, `services_blackbox`, `services_docker`, `host_logs`, `host_metrics` — sit directly at
-the cluster level), plus `alerts/my-perfect-system/meta` (one group per
-monitoring backend service).
+scoped groups (all cluster-level groups — `host_meta`, `services_ollama`,
+`services_sms`, `services_blackbox`, `services_docker`, `host_logs`,
+`host_metrics` — sit directly at the cluster level), plus
+`alerts/my-perfect-system/meta` (one group per monitoring backend service).
 A rule's
 `uid`/`title` reflects its path:
 `<clustername>_<rulegroup>_<feature>` (e.g. `tortuga_host_metrics_down`).
@@ -54,9 +54,7 @@ alerts/
   my-perfect-system/
     clusters/
       tortuga/
-        cluster_health.json     # group "cluster_health"     (view: cluster)
         host_meta.json          # group "host_meta"          (view: meta, alloy)
-        cluster_recordings.json # group "cluster_recordings" (recording rules)
         services_ollama.json  # group "services_ollama"  (view: service)
         services_sms.json  # group "services_sms"  (view: service)
         services_blackbox.json  # group "services_blackbox"  (view: service)
@@ -71,9 +69,7 @@ alerts/
 
 | File | Group | `view` | Covers |
 |---|---|---|---|
-| `clusters/tortuga/cluster_health.json` | `cluster_health` | `cluster` | cluster `tortuga` liveness: `cluster not reporting` alert |
 | `clusters/tortuga/host_meta.json` | `host_meta` | `meta` | monitoring exporter self-scrape (alloy) |
-| `clusters/tortuga/cluster_recordings.json` | `cluster_recordings` | — | the cluster's recording rules (`mps_sensor_excluded`, `mps_tortuga_host_expected`) |
 | `clusters/tortuga/services_ollama.json` | `services_ollama` | `service` | service liveness (ollama) |
 | `clusters/tortuga/services_sms.json` | `services_sms` | `service` | SMS exporter self-checks + service liveness (openvpn server/client, reboot, packages) |
 | `clusters/tortuga/services_blackbox.json` | `services_blackbox` | `service` | blackbox probe down + TLS cert expiry (invalid, 3d, 7d) |
@@ -91,28 +87,23 @@ Every rule carries a `view` label for filtering in the Alerting UI:
 | `view` | meaning |
 |---|---|
 | `host` | per-host state (`host_metrics`, `host_logs`) |
-| `cluster` | cluster-wide state (`cluster_health`) |
+| `cluster` | cluster-wide state (currently unused — no cluster-view group is defined) |
 | `service` | service liveness (`services_ollama`, `services_sms`, `services_blackbox`, `services_docker`) |
 | `meta` | monitoring-stack self-checks (`host_meta`, `prometheus`, `loki`, `grafana`) |
 
-Cluster-scoped rules also carry a `cluster` label (value = cluster name, e.g.
-`tortuga`); service-liveness rules carry `service`; every rule carries
-`severity` (`critical` / `warning`).
+Cluster-scoped rules would also carry a `cluster` label (value = cluster name,
+e.g. `tortuga`) — none are currently defined; service-liveness rules carry
+`service`; every rule carries `severity` (`critical` / `warning`).
 
 ### Recording rules
 
-Static metadata lives as recording rules (metric prefix `mps_`), consolidated
-in the cluster's `cluster_recordings` group rather than inline in queries:
-
-| Metric | Labels | Group | Meaning |
-|---|---|---|---|
-| `mps_sensor_excluded` | `chip`, `sensor` | `cluster_recordings` | known false-positive hardware sensors |
-| `mps_tortuga_host_expected` | `mps_alloy_hostname` | `cluster_recordings` | expected hosts for cluster `tortuga` |
-
-Recording rules use a `record` block instead of `condition` and write into
-Prometheus via `record.target_datasource_uid: "${DS_PROMETHEUS}"`. To change a
-list (exceptions, expected hosts) edit the `cluster_recordings` group file and
-re-upload — never inline the list in queries.
+The provisioning format supports Grafana-managed recording rules (a `record`
+block instead of `condition`, writing into Prometheus via
+`record.target_datasource_uid`), consolidated in a per-cluster
+`cluster_recordings` group with the reserved `mps_` metric prefix. **No
+recording-rule group is currently defined** — add one as a new JSON file under
+`alerts/my-perfect-system/clusters/<cluster>/` if needed, never inline static
+lists in alert queries.
 
 ### noDataState
 
@@ -138,40 +129,19 @@ rule level (twin rules with a longer `for` + a routing label).
 {
   "folder": "alerts/my-perfect-system/clusters/tortuga",
   "orgId": 1,
-  "title": "cluster_health",
+  "title": "host_metrics",
   "interval": 60,
   "rules": [
     {
-      "uid": "tortuga_cluster_health_hosts_up",
-      "title": "tortuga_cluster_health_hosts_up",
+      "uid": "tortuga_host_metrics_down",
+      "title": "tortuga_host_metrics_down",
       "condition": "C",
       "for": "5m",
-      "noDataState": "OK",
+      "noDataState": "NoData",
       "execErrState": "Error",
-      "labels": { "severity": "critical", "cluster": "tortuga", "view": "cluster" },
+      "labels": { "severity": "critical", "service": "host", "view": "host" },
       "annotations": { "summary": "…", "description": "…" },
       "data": [ { "refId": "A", "…": "query" }, { "refId": "C", "…": "classic_conditions" } ]
-    }
-  ]
-}
-```
-
-Recording rules live in their own `cluster_recordings` group, one per cluster:
-
-```json
-{
-  "folder": "alerts/my-perfect-system/clusters/tortuga",
-  "orgId": 1,
-  "title": "cluster_recordings",
-  "interval": 60,
-  "rules": [
-    {
-      "uid": "tortuga_cluster_recordings_host_expected",
-      "title": "tortuga_cluster_recordings_host_expected",
-      "record": { "metric": "mps_tortuga_host_expected", "from": "A", "target_datasource_uid": "${DS_PROMETHEUS}" },
-      "for": "0s",
-      "isPaused": false,
-      "data": [ { "refId": "A", "…": "query" } ]
     }
   ]
 }
@@ -182,14 +152,13 @@ Recording rules live in their own `cluster_recordings` group, one per cluster:
   from dashboard folders); use `folderUid` to target a folder directly. All
   groups live under `alerts/my-perfect-system/`: a cluster's groups directly in
   `"folder": "alerts/my-perfect-system/clusters/<cluster>"` (e.g.
-  `clusters/tortuga`, with groups `cluster_health`, `host_meta`, `cluster_recordings`, `services_ollama`,
-  `services_sms`, `services_blackbox`, `services_docker`, `host_logs`, `host_metrics`), or `"folder": "alerts/my-perfect-system/meta"` for the
+  `clusters/tortuga`, with groups `host_meta`, `services_ollama`,
+  `services_sms`, `services_blackbox`, `services_docker`, `host_logs`,
+  `host_metrics`), or `"folder": "alerts/my-perfect-system/meta"` for the
   backend self-checks. Rule uids/titles encode the path as
   `<clustername>_<rulegroup>_<feature>` (e.g.
-  `tortuga_cluster_health_hosts_up`, `tortuga_host_meta_target_down`,
-  `tortuga_host_metrics_down`), and metrics carry the `mps_` prefix
-  (`mps_tortuga_host_expected`, …).
-- `data[].datasourceUid` and `record.target_datasource_uid` use aliases
+  `tortuga_host_meta_target_down`, `tortuga_host_metrics_down`).
+- `data[].datasourceUid` uses aliases
   (`${DS_PROMETHEUS}`, `${DS_LOKI}`), resolved from
   `data/state/datasources.json`; `__expr__` is left untouched.
 - Upload with `just upload-alerts` (`src/commands/upload_alerts.py`). It is
@@ -262,7 +231,8 @@ tags".
   - `Statistics` tab: `Overview` → `Composition` → `Rankings` → `Inventory`.
 - `logs`: `Overview` → `Timeline` → `Top lists` → `Details` → `Raw logs`
 - `meta` (v2, tabbed — Performance template, see §10): tabs `Overview` /
-  `Health` / `Stats` / `Averages` / `Scrape` / domain tabs (see §10)
+  `Health` / `Stats` / `Compositions` / `Details` / `Averages` / `Scrape` /
+  domain tabs (see §10)
 - `cluster` (v2): tabs `Metrics` / `Logs` / `Monitoring`, each with
   `Overview` / `Timeline` / `Details` (+ domain rows such as
   `Prometheus` / `Loki` / `Grafana` in the Monitoring tab).
@@ -352,10 +322,11 @@ Resource dashboards are titled `CPU`, `Disks`, `HwMon`, `Memory`, `Network`,
 `<Topic> Log Analysis` log dashboards, the `<Service> Metrics` service
 dashboards plus `GPU (AMD)` (`my-perfect-system/services/`), and the meta
 dashboards `Prometheus`, `Loki`, `Grafana`, `Alloy` and the cross-service
-`Alerts` dashboard (`my-perfect-system/meta/`, rows `Overview` → `Timeline` →
-`Groups` → `Alert rules`; its centerpiece is the native **Alert list** panel —
-the `datasource` plugin has no alert query type in Grafana 13, so per-rule
-alert tables must use `alertlist`, which needs no datasource reference).
+`Alerts` dashboard (`my-perfect-system/meta/`, tabbed like the other meta
+dashboards — see §10; the native **Alert list** panel is the centerpiece of
+its trailing `Alert rules` domain tab — the `datasource` plugin has no alert
+query type in Grafana 13, so per-rule alert tables must use `alertlist`,
+which needs no datasource reference).
 
 ### 8. Resource dashboards (tabbed — Summary / Series / Statistics)
 
@@ -544,8 +515,8 @@ base + performance dashboard pairs were merged into these and removed).
 | `Prometheus` | `meta/dashboard_prometheus.json` | `meta-prometheus` | Overview / Health / Stats / Compositions / Details / Averages / Scrape / Ingest / Head & Series / Storage & Compaction / Query & API / Jobs & Targets |
 | `Loki` | `meta/dashboard_loki.json` | `meta-loki` | Overview / Health / Stats / Compositions / Details / Averages / Scrape / Streams & Labels / Throughput / Chunks & Flush / Query & Ring |
 | `Grafana` | `meta/dashboard_grafana.json` | `meta-grafana` | Overview / Health / Stats / Compositions / Details / Averages / Scrape / HTTP & API / Datasource / Users & Auth / Content & Inventory |
-| `Alloy` | `meta/dashboard_alloy.json` | `meta-alloy` | Overview / Health / Details / Averages / Scrape / Components |
-| `Alerts` | `meta/dashboard_alerts.json` | `alerts-metrics` | (cross-service, own layout — see §7) |
+| `Alloy` | `meta/dashboard_alloy.json` | `meta-alloy` | Overview / Health / Stats / Compositions / Details / Averages / Scrape |
+| `Alerts` | `meta/dashboard_alerts.json` | `alerts-metrics` | Overview / Health / Stats / Compositions / Details / Averages / Scrape / Alert rules (cross-service — see §7) |
 
 ### 10.1 Tab recipes
 
@@ -575,26 +546,33 @@ base + performance dashboard pairs were merged into these and removed).
   every Averages panel is exactly **one series** even when the metric exports
   several (per instance/host). Title suffix `… avg`; the panel
   unit is copied from the source stat.
-- **`Compositions`** — the piecharts (one row, legend docked `bottom` so long
-  label names wrap and the value/percent columns stay visible).
+- **`Compositions`** — exactly **four piecharts in a 2×2 grid** (`w=12`, `h=9`
+  each; donut, legend docked `bottom` so long label names wrap and the
+  value/percent columns stay visible).
 - **`Details`** — the full-width tables (`Scrape health per job`, …), with
   the **`Build info` table always last** (very bottom of the Details page).
 - **`Stats`** — **toplist | table pairs**:
   every row is a toplist (bargauge) on the **left** (`w=12`, `h=9`) and its
   table on the **right** — an existing matching table where available,
-  otherwise a table twin of the same ranking.
+  otherwise a table twin of the same ranking. Toplists use the family
+  bargauge style (`continuous-BlPu`, green base step). A tab may carry one
+  extra row of plain series (`w=12`, `h=9`) where a live per-dimension
+  trend complements the pairs (Alloy: fanout refs / relabel throughput by
+  `component_id`; Alerts: firing events per `service` from `GRAFANA_ALERTS`).
 - **Domain tabs** — the service's detailed timeseries, 2 per line
   (`w=12`, `h=8`); a lone panel takes the full width. Grid heights are
   integers (fractional heights are rejected by the API).
-- **Tab order** — `Overview` / `Health` / `Stats` / `Averages` / `Scrape` /
-  remaining domain tabs. `Health` is the service's health tab (Prometheus and
-  Loki: the former `WAL & Health`; Grafana: the former `Alerting & Health`;
-  Alloy: `Up`, `Config Load OK`, `Config Failures/s`). The `<Service> Up`
+- **Tab order** — `Overview` / `Health` / `Stats` / `Compositions` /
+  `Details` / `Averages` / `Scrape` / remaining domain tabs. `Health` is the
+  service's health tab (Prometheus and Loki: the former `WAL & Health`;
+  Grafana: the former `Alerting & Health`; Alloy: `Up`, `Config Load OK`,
+  `Config Failures/s`, `Components by health` + evaluation p99 series;
+  Alerts: `Up`, `Alerts by state`, `Evaluation health`). The `<Service> Up`
   series (e.g. `Prometheus Up`, `Loki Up`) is always the **top-left panel**
   of the Health tab.
 - **Scrape panels** — the scrape-specific panels (`Samples per scrape`,
-  `Scrape issues`, `Scrape duration`) make up the `Scrape` tab. On Prometheus
-  the ingest rate series (`Samples/s`, `Exemplars/s`, `Scrapes/s`,
+  `New series added (1h)`, `Scrape duration`) make up the `Scrape` tab. On
+  Prometheus the ingest rate series (`Samples/s`, `Exemplars/s`, `Scrapes/s`,
   `New series added (1h)`) live in a separate `Ingest` tab directly after
   `Scrape`.
 
@@ -607,6 +585,16 @@ base + performance dashboard pairs were merged into these and removed).
 - Job labels are ground truth from the alert rules: `prometheus`,
   `monitoring-loki`, `monitoring-grafana`;
   Alloy queries use `job="integrations/self"`.
+- **`Alerts` dashboard** — a Performance-template dashboard over Grafana's own
+  alerting metrics: `grafana_stat_totals_*`, `grafana_alerting_*`
+  (`job="monitoring-grafana"`) and range-scoped `GRAFANA_ALERTS` state-history
+  events. Its Overview stats count rules/groups (`grafana_stat_totals_*`,
+  `grafana_alerting_rule_group_rules`) and live alerts per state
+  (`grafana_alerting_alerts{state=...}`); the trailing `Alert rules` domain
+  tab hosts the native `alertlist` centerpiece.
+- Per-host series on the Alloy dashboard use `{{mps_alloy_hostname}}` legends
+  (plain `palette-classic`, no fixed-colour overrides — each host gets its own
+  colour).
 - **Series colours** — every timeseries panel uses `palette-classic` (never
   threshold/continuous colouring, which paints whole panels green or red).
   Query colours are pinned **per panel** via `byFrameRefID` overrides:
